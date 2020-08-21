@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Haipa.IdentityModel.Clients" Version="0.1.0-ci.25" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Haipa.IdentityClient\Haipa.IdentityClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Haipa.ClientRuntime">
+      <HintPath>..\..\..\dotnet-clientruntime\src\Haipa.ClientRuntime.Authentication\bin\Debug\netstandard2.0\Haipa.ClientRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Haipa.ClientRuntime.Authentication">
+      <HintPath>..\..\..\dotnet-clientruntime\src\Haipa.ClientRuntime.Authentication\bin\Debug\netstandard2.0\Haipa.ClientRuntime.Authentication.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
