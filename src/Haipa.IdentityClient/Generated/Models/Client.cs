@@ -10,26 +10,27 @@ namespace Haipa.IdentityClient.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class HaipaClient
+    public partial class Client
     {
         /// <summary>
-        /// Initializes a new instance of the HaipaClient class.
+        /// Initializes a new instance of the Client class.
         /// </summary>
-        public HaipaClient()
+        public Client()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaClient class.
+        /// Initializes a new instance of the Client class.
         /// </summary>
         /// <param name="id">Unique identifier for a haipa client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are
         /// allowed.</param>
-        /// <param name="name">human readable name of client</param>
+        /// <param name="name">human readable name of client, for example email
+        /// address of owner</param>
         /// <param name="description">optional description of client</param>
         /// <param name="allowedScopes">allowed scopes of client</param>
-        public HaipaClient(string id = default(string), string name = default(string), string description = default(string), IList<string> allowedScopes = default(IList<string>))
+        public Client(string id = default(string), string name = default(string), string description = default(string), IList<string> allowedScopes = default(IList<string>))
         {
             Id = id;
             Name = name;
@@ -51,7 +52,8 @@ namespace Haipa.IdentityClient.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets human readable name of client
+        /// Gets or sets human readable name of client, for example email
+        /// address of owner
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -78,23 +80,23 @@ namespace Haipa.IdentityClient.Models
         {
             if (Id != null)
             {
-                if (Id.Length > 36)
+                if (Id.Length > 40)
                 {
-                    throw new ValidationException(ValidationRules.MaxLength, "Id", 36);
+                    throw new ValidationException(ValidationRules.MaxLength, "Id", 40);
                 }
             }
             if (Name != null)
             {
-                if (Name.Length > 20)
+                if (Name.Length > 254)
                 {
-                    throw new ValidationException(ValidationRules.MaxLength, "Name", 20);
+                    throw new ValidationException(ValidationRules.MaxLength, "Name", 254);
                 }
             }
             if (Description != null)
             {
-                if (Description.Length > 40)
+                if (Description.Length > 200)
                 {
-                    throw new ValidationException(ValidationRules.MaxLength, "Description", 40);
+                    throw new ValidationException(ValidationRules.MaxLength, "Description", 200);
                 }
             }
         }

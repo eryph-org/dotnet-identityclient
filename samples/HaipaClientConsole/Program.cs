@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Haipa.ClientRuntime.Authentication;
+using Haipa.ClientRuntime.OData;
 using Haipa.IdentityClient;
 using Haipa.IdentityClient.Models;
 
@@ -14,9 +15,11 @@ namespace HaipaClientConsole
             var credentials = await ApplicationTokenProvider.LogonWithHaipaClient(Array.Empty<string>());
             using var identityClient = new HaipaIdentityClient(credentials);
 
-            await identityClient.Clients.CreateAsync(new HaipaClient{Name="test"});
+            var createdClient = await identityClient.Clients.CreateAsync(new Client{Name = "info@haipa.io"});
+            Console.WriteLine(createdClient.Key);
 
-            var results = await identityClient.Clients.ListAsync() as HaipaClientList;
+            var results =
+                await identityClient.Clients.ListAsync(new ODataQuery<Client>(x => x.Name == "info@haipa.io"));
             foreach (var result in results.Value)
             {
                 Console.WriteLine($"{result.Id} - {result.Name}");

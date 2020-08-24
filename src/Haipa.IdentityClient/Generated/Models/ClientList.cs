@@ -9,20 +9,20 @@ namespace Haipa.IdentityClient.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class HaipaClientList
+    public partial class ClientList
     {
         /// <summary>
-        /// Initializes a new instance of the HaipaClientList class.
+        /// Initializes a new instance of the ClientList class.
         /// </summary>
-        public HaipaClientList()
+        public ClientList()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaClientList class.
+        /// Initializes a new instance of the ClientList class.
         /// </summary>
-        public HaipaClientList(IList<HaipaClient> value = default(IList<HaipaClient>))
+        public ClientList(IList<Client> value = default(IList<Client>))
         {
             Value = value;
             CustomInit();
@@ -36,7 +36,7 @@ namespace Haipa.IdentityClient.Models
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "value")]
-        public IList<HaipaClient> Value { get; set; }
+        public IList<Client> Value { get; set; }
 
     }
 }

@@ -5,6 +5,7 @@
 namespace Haipa.IdentityClient
 {
     using Haipa.ClientRuntime;
+    using Haipa.ClientRuntime.OData;
     using Microsoft.Rest;
     using Models;
     using Newtonsoft.Json;
@@ -47,27 +48,11 @@ namespace Haipa.IdentityClient
         /// <summary>
         /// Queries for Clients.
         /// </summary>
+        /// <param name='odataQuery'>
+        /// OData parameters to apply to the operation.
+        /// </param>
         /// <param name='select'>
         /// Limits the properties returned in the result.
-        /// </param>
-        /// <param name='expand'>
-        /// Indicates the related entities to be represented inline. The maximum depth
-        /// is 2.
-        /// </param>
-        /// <param name='filter'>
-        /// Restricts the set of items returned. The maximum number of expressions is
-        /// 100. The allowed functions are: allfunctions.
-        /// </param>
-        /// <param name='orderby'>
-        /// Specifies the order in which items are returned. The maximum number of
-        /// expressions is 5.
-        /// </param>
-        /// <param name='top'>
-        /// Limits the number of items returned from a collection.
-        /// </param>
-        /// <param name='skip'>
-        /// Excludes the specified number of items of the queried collection from the
-        /// result.
         /// </param>
         /// <param name='count'>
         /// Indicates whether the total count of items within a collection are returned
@@ -79,7 +64,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="SerializationException">
@@ -88,7 +73,7 @@ namespace Haipa.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> ListWithHttpMessagesAsync(string select = default(string), string expand = default(string), string filter = default(string), string orderby = default(string), int? top = default(int?), int? skip = default(int?), bool? count = false, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientList>> ListWithHttpMessagesAsync(Haipa.ClientRuntime.OData.ODataQuery<Client> odataQuery = default(Haipa.ClientRuntime.OData.ODataQuery<Client>), string select = default(string), bool? count = false, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -97,43 +82,27 @@ namespace Haipa.IdentityClient
             {
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("odataQuery", odataQuery);
                 tracingParameters.Add("select", select);
-                tracingParameters.Add("expand", expand);
-                tracingParameters.Add("filter", filter);
-                tracingParameters.Add("orderby", orderby);
-                tracingParameters.Add("top", top);
-                tracingParameters.Add("skip", skip);
                 tracingParameters.Add("count", count);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "List", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/HaipaClients").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients").ToString();
             List<string> _queryParameters = new List<string>();
+            if (odataQuery != null)
+            {
+                var _odataFilter = odataQuery.ToString();
+                if (!string.IsNullOrEmpty(_odataFilter))
+                {
+                    _queryParameters.Add(_odataFilter);
+                }
+            }
             if (select != null)
             {
                 _queryParameters.Add(string.Format("$select={0}", System.Uri.EscapeDataString(select)));
-            }
-            if (expand != null)
-            {
-                _queryParameters.Add(string.Format("$expand={0}", System.Uri.EscapeDataString(expand)));
-            }
-            if (filter != null)
-            {
-                _queryParameters.Add(string.Format("$filter={0}", System.Uri.EscapeDataString(filter)));
-            }
-            if (orderby != null)
-            {
-                _queryParameters.Add(string.Format("$orderby={0}", System.Uri.EscapeDataString(orderby)));
-            }
-            if (top != null)
-            {
-                _queryParameters.Add(string.Format("$top={0}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(top, Client.SerializationSettings).Trim('"'))));
-            }
-            if (skip != null)
-            {
-                _queryParameters.Add(string.Format("$skip={0}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(skip, Client.SerializationSettings).Trim('"'))));
             }
             if (count != null)
             {
@@ -197,16 +166,16 @@ namespace Haipa.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
-                var ex = new Haipa.ClientRuntime.HaipaServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Haipa.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
                 {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    HaipaError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaError>(_responseContent, Client.DeserializationSettings);
+                    ApiError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ApiError>(_responseContent, Client.DeserializationSettings);
                     if (_errorBody != null)
                     {
-                        ex = new Haipa.ClientRuntime.HaipaServiceException(_errorBody.Message);
+                        ex = new Haipa.ClientRuntime.ApiServiceException(_errorBody.Message);
                         ex.Body = _errorBody;
                     }
                 }
@@ -232,7 +201,7 @@ namespace Haipa.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<object>();
+            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<ClientList>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -245,25 +214,7 @@ namespace Haipa.IdentityClient
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaClientList>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ClientList>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -290,7 +241,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="SerializationException">
@@ -299,7 +250,7 @@ namespace Haipa.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> CreateWithHttpMessagesAsync(HaipaClient body = default(HaipaClient), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>> CreateWithHttpMessagesAsync(Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (body != null)
             {
@@ -318,7 +269,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/HaipaClients").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients").ToString();
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
             {
@@ -362,7 +313,7 @@ namespace Haipa.IdentityClient
             {
                 _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(body, Client.SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
-                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata.metadata=minimal;odata.streaming=true; charset=utf-8");
             }
             // Set Credentials
             if (Client.Credentials != null)
@@ -384,16 +335,16 @@ namespace Haipa.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 201 && (int)_statusCode != 400)
+            if ((int)_statusCode != 201)
             {
-                var ex = new Haipa.ClientRuntime.HaipaServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Haipa.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
                 {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    HaipaError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaError>(_responseContent, Client.DeserializationSettings);
+                    ApiError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ApiError>(_responseContent, Client.DeserializationSettings);
                     if (_errorBody != null)
                     {
-                        ex = new Haipa.ClientRuntime.HaipaServiceException(_errorBody.Message);
+                        ex = new Haipa.ClientRuntime.ApiServiceException(_errorBody.Message);
                         ex.Body = _errorBody;
                     }
                 }
@@ -419,7 +370,7 @@ namespace Haipa.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<object>();
+            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -432,25 +383,7 @@ namespace Haipa.IdentityClient
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<CreatedHaipaClient>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 400)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ClientWithSecrets>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -477,7 +410,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="SerializationException">
@@ -486,7 +419,7 @@ namespace Haipa.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> NewKeyWithHttpMessagesAsync(string clientId = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>> NewKeyWithHttpMessagesAsync(string clientId = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -501,7 +434,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/HaipaClients").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients").ToString();
             List<string> _queryParameters = new List<string>();
             if (clientId != null)
             {
@@ -565,16 +498,16 @@ namespace Haipa.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
-                var ex = new Haipa.ClientRuntime.HaipaServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Haipa.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
                 {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    HaipaError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaError>(_responseContent, Client.DeserializationSettings);
+                    ApiError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ApiError>(_responseContent, Client.DeserializationSettings);
                     if (_errorBody != null)
                     {
-                        ex = new Haipa.ClientRuntime.HaipaServiceException(_errorBody.Message);
+                        ex = new Haipa.ClientRuntime.ApiServiceException(_errorBody.Message);
                         ex.Body = _errorBody;
                     }
                 }
@@ -600,7 +533,7 @@ namespace Haipa.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<object>();
+            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -613,25 +546,7 @@ namespace Haipa.IdentityClient
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<CreatedHaipaClient>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ClientWithSecrets>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -665,7 +580,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="SerializationException">
@@ -680,7 +595,7 @@ namespace Haipa.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> GetWithHttpMessagesAsync(string key, string select = default(string), string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> GetWithHttpMessagesAsync(string key, string select = default(string), string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (key == null)
             {
@@ -701,7 +616,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/HaipaClients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (select != null)
@@ -770,16 +685,16 @@ namespace Haipa.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
-                var ex = new Haipa.ClientRuntime.HaipaServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Haipa.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
                 {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    HaipaError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaError>(_responseContent, Client.DeserializationSettings);
+                    ApiError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ApiError>(_responseContent, Client.DeserializationSettings);
                     if (_errorBody != null)
                     {
-                        ex = new Haipa.ClientRuntime.HaipaServiceException(_errorBody.Message);
+                        ex = new Haipa.ClientRuntime.ApiServiceException(_errorBody.Message);
                         ex.Body = _errorBody;
                     }
                 }
@@ -805,7 +720,7 @@ namespace Haipa.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<object>();
+            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<Client>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -818,25 +733,7 @@ namespace Haipa.IdentityClient
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaClient>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Client>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -863,7 +760,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="SerializationException">
@@ -897,7 +794,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/HaipaClients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
@@ -960,14 +857,14 @@ namespace Haipa.IdentityClient
             string _responseContent = null;
             if ((int)_statusCode != 200)
             {
-                var ex = new Haipa.ClientRuntime.HaipaServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Haipa.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
                 {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    HaipaError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaError>(_responseContent, Client.DeserializationSettings);
+                    ApiError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ApiError>(_responseContent, Client.DeserializationSettings);
                     if (_errorBody != null)
                     {
-                        ex = new Haipa.ClientRuntime.HaipaServiceException(_errorBody.Message);
+                        ex = new Haipa.ClientRuntime.ApiServiceException(_errorBody.Message);
                         ex.Body = _errorBody;
                     }
                 }
@@ -1035,7 +932,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="SerializationException">
@@ -1050,7 +947,7 @@ namespace Haipa.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> UpdateWithHttpMessagesAsync(string key, HaipaClient body = default(HaipaClient), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> UpdateWithHttpMessagesAsync(string key, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (key == null)
             {
@@ -1074,7 +971,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/HaipaClients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
@@ -1141,16 +1038,16 @@ namespace Haipa.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 400 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
-                var ex = new Haipa.ClientRuntime.HaipaServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Haipa.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
                 {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    HaipaError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaError>(_responseContent, Client.DeserializationSettings);
+                    ApiError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ApiError>(_responseContent, Client.DeserializationSettings);
                     if (_errorBody != null)
                     {
-                        ex = new Haipa.ClientRuntime.HaipaServiceException(_errorBody.Message);
+                        ex = new Haipa.ClientRuntime.ApiServiceException(_errorBody.Message);
                         ex.Body = _errorBody;
                     }
                 }
@@ -1176,7 +1073,7 @@ namespace Haipa.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<object>();
+            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<Client>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -1189,43 +1086,7 @@ namespace Haipa.IdentityClient
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 400)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Client>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -1254,7 +1115,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="SerializationException">
@@ -1269,7 +1130,7 @@ namespace Haipa.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> ChangeWithHttpMessagesAsync(string key, HaipaClient body = default(HaipaClient), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> ChangeWithHttpMessagesAsync(string key, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (key == null)
             {
@@ -1289,7 +1150,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/HaipaClients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
@@ -1356,16 +1217,16 @@ namespace Haipa.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 400 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
-                var ex = new Haipa.ClientRuntime.HaipaServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                var ex = new Haipa.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
                 {
                     _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    HaipaError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<HaipaError>(_responseContent, Client.DeserializationSettings);
+                    ApiError _errorBody =  Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ApiError>(_responseContent, Client.DeserializationSettings);
                     if (_errorBody != null)
                     {
-                        ex = new Haipa.ClientRuntime.HaipaServiceException(_errorBody.Message);
+                        ex = new Haipa.ClientRuntime.ApiServiceException(_errorBody.Message);
                         ex.Body = _errorBody;
                     }
                 }
@@ -1391,7 +1252,7 @@ namespace Haipa.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<object>();
+            var _result = new Haipa.ClientRuntime.HaipaOperationResponse<Client>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -1404,43 +1265,7 @@ namespace Haipa.IdentityClient
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 400)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<object>(_responseContent, Client.DeserializationSettings);
+                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Client>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {

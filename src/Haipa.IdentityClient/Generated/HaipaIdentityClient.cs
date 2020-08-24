@@ -16,7 +16,7 @@ namespace Haipa.IdentityClient
     using System.Net.Http;
 
     /// <summary>
-    /// Haipa Identity API
+    /// Haipa Identity Api
     /// </summary>
     public partial class HaipaIdentityClient : ServiceClient<HaipaIdentityClient>, IHaipaIdentityClient, IHaipaClient
     {
@@ -328,7 +328,7 @@ namespace Haipa.IdentityClient
                     }
             };
             CustomInitialize();
-            DeserializationSettings.Converters.Add(new Haipa.ClientRuntime.HaipaErrorJsonConverter());
+            DeserializationSettings.Converters.Add(new Haipa.ClientRuntime.ApiErrorJsonConverter());
         }
     }
 }

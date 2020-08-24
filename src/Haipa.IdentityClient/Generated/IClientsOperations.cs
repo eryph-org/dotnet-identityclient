@@ -5,6 +5,7 @@
 namespace Haipa.IdentityClient
 {
     using Haipa.ClientRuntime;
+    using Haipa.ClientRuntime.OData;
     using Models;
     using System.Collections;
     using System.Collections.Generic;
@@ -19,27 +20,11 @@ namespace Haipa.IdentityClient
         /// <summary>
         /// Queries for Clients.
         /// </summary>
+        /// <param name='odataQuery'>
+        /// OData parameters to apply to the operation.
+        /// </param>
         /// <param name='select'>
         /// Limits the properties returned in the result.
-        /// </param>
-        /// <param name='expand'>
-        /// Indicates the related entities to be represented inline. The
-        /// maximum depth is 2.
-        /// </param>
-        /// <param name='filter'>
-        /// Restricts the set of items returned. The maximum number of
-        /// expressions is 100. The allowed functions are: allfunctions.
-        /// </param>
-        /// <param name='orderby'>
-        /// Specifies the order in which items are returned. The maximum number
-        /// of expressions is 5.
-        /// </param>
-        /// <param name='top'>
-        /// Limits the number of items returned from a collection.
-        /// </param>
-        /// <param name='skip'>
-        /// Excludes the specified number of items of the queried collection
-        /// from the result.
         /// </param>
         /// <param name='count'>
         /// Indicates whether the total count of items within a collection are
@@ -51,13 +36,13 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> ListWithHttpMessagesAsync(string select = default(string), string expand = default(string), string filter = default(string), string orderby = default(string), int? top = default(int?), int? skip = default(int?), bool? count = false, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientList>> ListWithHttpMessagesAsync(Haipa.ClientRuntime.OData.ODataQuery<Client> odataQuery = default(Haipa.ClientRuntime.OData.ODataQuery<Client>), string select = default(string), bool? count = false, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
@@ -66,13 +51,13 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> CreateWithHttpMessagesAsync(HaipaClient body = default(HaipaClient), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>> CreateWithHttpMessagesAsync(Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <param name='clientId'>
         /// </param>
         /// <param name='customHeaders'>
@@ -81,13 +66,13 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> NewKeyWithHttpMessagesAsync(string clientId = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>> NewKeyWithHttpMessagesAsync(string clientId = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <param name='key'>
         /// </param>
         /// <param name='select'>
@@ -103,7 +88,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -112,7 +97,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> GetWithHttpMessagesAsync(string key, string select = default(string), string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> GetWithHttpMessagesAsync(string key, string select = default(string), string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <param name='key'>
         /// </param>
         /// <param name='customHeaders'>
@@ -121,7 +106,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -141,7 +126,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -150,7 +135,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> UpdateWithHttpMessagesAsync(string key, HaipaClient body = default(HaipaClient), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> UpdateWithHttpMessagesAsync(string key, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <param name='key'>
         /// </param>
         /// <param name='body'>
@@ -161,7 +146,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.HaipaServiceException">
+        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -170,6 +155,6 @@ namespace Haipa.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> ChangeWithHttpMessagesAsync(string key, HaipaClient body = default(HaipaClient), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> ChangeWithHttpMessagesAsync(string key, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

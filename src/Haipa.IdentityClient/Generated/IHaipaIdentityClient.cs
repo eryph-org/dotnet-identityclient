@@ -10,7 +10,7 @@ namespace Haipa.IdentityClient
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Haipa Identity API
+    /// Haipa Identity Api
     /// </summary>
     public partial interface IHaipaIdentityClient : System.IDisposable
     {

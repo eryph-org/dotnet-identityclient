@@ -5,6 +5,7 @@
 namespace Haipa.IdentityClient
 {
     using Haipa.ClientRuntime;
+    using Haipa.ClientRuntime.OData;
     using Models;
     using System.Threading;
     using System.Threading.Tasks;
@@ -20,35 +21,19 @@ namespace Haipa.IdentityClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='odataQuery'>
+            /// OData parameters to apply to the operation.
+            /// </param>
             /// <param name='select'>
             /// Limits the properties returned in the result.
-            /// </param>
-            /// <param name='expand'>
-            /// Indicates the related entities to be represented inline. The maximum depth
-            /// is 2.
-            /// </param>
-            /// <param name='filter'>
-            /// Restricts the set of items returned. The maximum number of expressions is
-            /// 100. The allowed functions are: allfunctions.
-            /// </param>
-            /// <param name='orderby'>
-            /// Specifies the order in which items are returned. The maximum number of
-            /// expressions is 5.
-            /// </param>
-            /// <param name='top'>
-            /// Limits the number of items returned from a collection.
-            /// </param>
-            /// <param name='skip'>
-            /// Excludes the specified number of items of the queried collection from the
-            /// result.
             /// </param>
             /// <param name='count'>
             /// Indicates whether the total count of items within a collection are returned
             /// in the result.
             /// </param>
-            public static object List(this IClientsOperations operations, string select = default(string), string expand = default(string), string filter = default(string), string orderby = default(string), int? top = default(int?), int? skip = default(int?), bool? count = false)
+            public static ClientList List(this IClientsOperations operations, Haipa.ClientRuntime.OData.ODataQuery<Client> odataQuery = default(Haipa.ClientRuntime.OData.ODataQuery<Client>), string select = default(string), bool? count = false)
             {
-                return operations.ListAsync(select, expand, filter, orderby, top, skip, count).GetAwaiter().GetResult();
+                return operations.ListAsync(odataQuery, select, count).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -57,27 +42,11 @@ namespace Haipa.IdentityClient
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            /// <param name='odataQuery'>
+            /// OData parameters to apply to the operation.
+            /// </param>
             /// <param name='select'>
             /// Limits the properties returned in the result.
-            /// </param>
-            /// <param name='expand'>
-            /// Indicates the related entities to be represented inline. The maximum depth
-            /// is 2.
-            /// </param>
-            /// <param name='filter'>
-            /// Restricts the set of items returned. The maximum number of expressions is
-            /// 100. The allowed functions are: allfunctions.
-            /// </param>
-            /// <param name='orderby'>
-            /// Specifies the order in which items are returned. The maximum number of
-            /// expressions is 5.
-            /// </param>
-            /// <param name='top'>
-            /// Limits the number of items returned from a collection.
-            /// </param>
-            /// <param name='skip'>
-            /// Excludes the specified number of items of the queried collection from the
-            /// result.
             /// </param>
             /// <param name='count'>
             /// Indicates whether the total count of items within a collection are returned
@@ -86,9 +55,9 @@ namespace Haipa.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> ListAsync(this IClientsOperations operations, string select = default(string), string expand = default(string), string filter = default(string), string orderby = default(string), int? top = default(int?), int? skip = default(int?), bool? count = false, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ClientList> ListAsync(this IClientsOperations operations, Haipa.ClientRuntime.OData.ODataQuery<Client> odataQuery = default(Haipa.ClientRuntime.OData.ODataQuery<Client>), string select = default(string), bool? count = false, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.ListWithHttpMessagesAsync(select, expand, filter, orderby, top, skip, count, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.ListWithHttpMessagesAsync(odataQuery, select, count, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -99,7 +68,7 @@ namespace Haipa.IdentityClient
             /// </param>
             /// <param name='body'>
             /// </param>
-            public static object Create(this IClientsOperations operations, HaipaClient body = default(HaipaClient))
+            public static ClientWithSecrets Create(this IClientsOperations operations, Client body = default(Client))
             {
                 return operations.CreateAsync(body).GetAwaiter().GetResult();
             }
@@ -112,7 +81,7 @@ namespace Haipa.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> CreateAsync(this IClientsOperations operations, HaipaClient body = default(HaipaClient), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ClientWithSecrets> CreateAsync(this IClientsOperations operations, Client body = default(Client), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.CreateWithHttpMessagesAsync(body, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -125,7 +94,7 @@ namespace Haipa.IdentityClient
             /// </param>
             /// <param name='clientId'>
             /// </param>
-            public static object NewKey(this IClientsOperations operations, string clientId = default(string))
+            public static ClientWithSecrets NewKey(this IClientsOperations operations, string clientId = default(string))
             {
                 return operations.NewKeyAsync(clientId).GetAwaiter().GetResult();
             }
@@ -138,7 +107,7 @@ namespace Haipa.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> NewKeyAsync(this IClientsOperations operations, string clientId = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ClientWithSecrets> NewKeyAsync(this IClientsOperations operations, string clientId = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.NewKeyWithHttpMessagesAsync(clientId, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -158,7 +127,7 @@ namespace Haipa.IdentityClient
             /// Indicates the related entities to be represented inline. The maximum depth
             /// is 2.
             /// </param>
-            public static object Get(this IClientsOperations operations, string key, string select = default(string), string expand = default(string))
+            public static Client Get(this IClientsOperations operations, string key, string select = default(string), string expand = default(string))
             {
                 return operations.GetAsync(key, select, expand).GetAwaiter().GetResult();
             }
@@ -178,7 +147,7 @@ namespace Haipa.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> GetAsync(this IClientsOperations operations, string key, string select = default(string), string expand = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Client> GetAsync(this IClientsOperations operations, string key, string select = default(string), string expand = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetWithHttpMessagesAsync(key, select, expand, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -219,7 +188,7 @@ namespace Haipa.IdentityClient
             /// </param>
             /// <param name='body'>
             /// </param>
-            public static object Update(this IClientsOperations operations, string key, HaipaClient body = default(HaipaClient))
+            public static Client Update(this IClientsOperations operations, string key, Client body = default(Client))
             {
                 return operations.UpdateAsync(key, body).GetAwaiter().GetResult();
             }
@@ -234,7 +203,7 @@ namespace Haipa.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> UpdateAsync(this IClientsOperations operations, string key, HaipaClient body = default(HaipaClient), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Client> UpdateAsync(this IClientsOperations operations, string key, Client body = default(Client), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.UpdateWithHttpMessagesAsync(key, body, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -249,7 +218,7 @@ namespace Haipa.IdentityClient
             /// </param>
             /// <param name='body'>
             /// </param>
-            public static object Change(this IClientsOperations operations, string key, HaipaClient body = default(HaipaClient))
+            public static Client Change(this IClientsOperations operations, string key, Client body = default(Client))
             {
                 return operations.ChangeAsync(key, body).GetAwaiter().GetResult();
             }
@@ -264,7 +233,7 @@ namespace Haipa.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> ChangeAsync(this IClientsOperations operations, string key, HaipaClient body = default(HaipaClient), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Client> ChangeAsync(this IClientsOperations operations, string key, Client body = default(Client), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ChangeWithHttpMessagesAsync(key, body, null, cancellationToken).ConfigureAwait(false))
                 {
