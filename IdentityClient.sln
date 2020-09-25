@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haipa.IdentityClient", "src\Haipa.IdentityClient\Haipa.IdentityClient.csproj", "{BA9B9DCE-90F9-435F-830E-DEF34EC12606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haipa.IdentityClient", "src\Haipa.IdentityClient\Haipa.IdentityClient.csproj", "{BA9B9DCE-90F9-435F-830E-DEF34EC12606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaipaClientConsole", "samples\HaipaClientConsole\HaipaClientConsole.csproj", "{00C4A896-7508-4FC8-9E05-C7AD246D98E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Haipa.IdentityClient.Commands", "C:\Users\fwagner\source\Repos\Haipa\dotnet-identityclient\src\Haipa.IdentityClient.Commands\Haipa.IdentityClient.Commands.csproj", "{163F37FB-472E-4BCE-93D1-1EBC723AC8B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{BA9B9DCE-90F9-435F-830E-DEF34EC12606}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9B9DCE-90F9-435F-830E-DEF34EC12606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9B9DCE-90F9-435F-830E-DEF34EC12606}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00C4A896-7508-4FC8-9E05-C7AD246D98E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00C4A896-7508-4FC8-9E05-C7AD246D98E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00C4A896-7508-4FC8-9E05-C7AD246D98E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00C4A896-7508-4FC8-9E05-C7AD246D98E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{163F37FB-472E-4BCE-93D1-1EBC723AC8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163F37FB-472E-4BCE-93D1-1EBC723AC8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163F37FB-472E-4BCE-93D1-1EBC723AC8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163F37FB-472E-4BCE-93D1-1EBC723AC8B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
