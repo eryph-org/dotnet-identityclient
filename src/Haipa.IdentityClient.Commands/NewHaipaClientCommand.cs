@@ -1,15 +1,21 @@
-﻿using System.Management.Automation;
+﻿using System.Linq;
+using System.Management.Automation;
+using System.Runtime.Serialization;
+using System.Security;
 using Haipa.IdentityClient.Models;
+using JetBrains.Annotations;
 
 namespace Haipa.IdentityClient.Commands
 {
-    [Cmdlet(VerbsCommon.New,"HaipaClient", DefaultParameterSetName = "create")]
-    [OutputType(typeof(ClientWithSecrets), typeof(Client), ParameterSetName = new []{"create", "createAndSave"})]
+    [PublicAPI]
+    [Cmdlet(VerbsCommon.New, "HaipaClient", DefaultParameterSetName = "create")]
+    [OutputType(typeof(CreatedClient), typeof(Client), ParameterSetName = new[] {"create", "createAndSave"})]
     public class NewHaipaClientCommand : IdentityCmdLet
     {
         [Parameter(
             Position = 0,
             ValueFromPipeline = true,
+            Mandatory = true,
             ParameterSetName = "create",
             ValueFromPipelineByPropertyName = true)]
         [Parameter(
@@ -23,9 +29,11 @@ namespace Haipa.IdentityClient.Commands
         [Parameter(
             Position = 1,
             ParameterSetName = "create",
+            Mandatory = true,
             ValueFromPipelineByPropertyName = true)]
         [Parameter(
             Position = 1,
+            Mandatory = true,
             ParameterSetName = "createAndSave",
             ValueFromPipelineByPropertyName = true)]
         public string[] AllowedScopes { get; set; }
@@ -47,11 +55,10 @@ namespace Haipa.IdentityClient.Commands
             ParameterSetName = "createAndSave")]
         public SwitchParameter AsDefault { get; set; }
 
-        // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
         protected override void ProcessRecord()
         {
             var clientCredentials = GetClientCredentials();
-            using (var identityClient = new HaipaIdentityClient(GetCredentials()))
+            using (var identityClient = new HaipaIdentityClient(GetCredentials("identity:clients:write:all")))
             {
                 foreach (var name in Name)
                 {
@@ -72,7 +79,15 @@ namespace Haipa.IdentityClient.Commands
                         WriteObject(new Client(result.Id, result.Name, result.Description, result.AllowedScopes));
                     }
                     else
-                        WriteObject(result);
+                        WriteObject(new CreatedClient
+                        {
+                            Id = result.Id,
+                            Name = result.Name,
+                            AllowedScopes = result.AllowedScopes.ToArray(),
+                            Description = result.Description,
+                            IdentityProvider = clientCredentials.IdentityProvider,
+                            PrivateKey = result.Key
+                        });
 
 
 

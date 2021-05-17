@@ -1,9 +1,11 @@
 ﻿using System.Management.Automation;
 using Haipa.ClientRuntime.OData;
 using Haipa.IdentityClient.Models;
+using JetBrains.Annotations;
 
 namespace Haipa.IdentityClient.Commands
 {
+    [PublicAPI]
     [Cmdlet(VerbsCommon.Get,"HaipaClient", DefaultParameterSetName = "get client")]
     [OutputType(typeof(Client))]
     public class GetHaipaClientCommand : IdentityCmdLet
@@ -22,16 +24,15 @@ namespace Haipa.IdentityClient.Commands
         public string[] Name { get; set; }
 
 
-        // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
         protected override void ProcessRecord()
         {
-            using (var identityClient = new HaipaIdentityClient(GetCredentials()))
+            using (var identityClient = new HaipaIdentityClient(GetCredentials("identity:clients:read:all")))
             {
                 if (Id != null)
                 {
                     foreach (var id in Id)
                     {
-                        WriteObject(identityClient.Clients.Get(id.ToString()));
+                        WriteObject(identityClient.Clients.Get(id));
                     }
 
                     return;

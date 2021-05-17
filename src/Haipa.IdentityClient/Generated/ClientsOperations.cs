@@ -90,7 +90,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/v1/Clients").ToString();
             List<string> _queryParameters = new List<string>();
             if (odataQuery != null)
             {
@@ -269,7 +269,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/v1/Clients").ToString();
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
             {
@@ -434,7 +434,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/v1/Clients").ToString();
             List<string> _queryParameters = new List<string>();
             if (clientId != null)
             {
@@ -616,7 +616,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (select != null)
@@ -794,7 +794,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
@@ -971,7 +971,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
@@ -1150,7 +1150,7 @@ namespace Haipa.IdentityClient
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "odata/v1/Clients/{key}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/v1/Clients/{key}").ToString();
             _url = _url.Replace("{key}", System.Uri.EscapeDataString(key));
             List<string> _queryParameters = new List<string>();
             if (_queryParameters.Count > 0)
