@@ -2,9 +2,9 @@
 // MIT
 // </auto-generated>
 
-namespace Haipa.IdentityClient
+namespace Eryph.IdentityClient
 {
-    using Haipa.ClientRuntime;
+    using Eryph.ClientRuntime;
     using Microsoft.Rest;
     using Microsoft.Rest.Serialization;
     using Models;
@@ -18,7 +18,7 @@ namespace Haipa.IdentityClient
     /// <summary>
     /// Haipa Identity Api
     /// </summary>
-    public partial class HaipaIdentityClient : ServiceClient<HaipaIdentityClient>, IHaipaIdentityClient, IHaipaClient
+    public partial class EryphIdentityClient : ServiceClient<EryphIdentityClient>, IEryphIdentityClient, IEryphClient
     {
         /// <summary>
         /// The base URI of the service.
@@ -36,7 +36,7 @@ namespace Haipa.IdentityClient
         public JsonSerializerSettings DeserializationSettings { get; private set; }
 
         /// <summary>
-        /// Credentials needed for the client to connect to Haipa.
+        /// Credentials needed for the client to connect to eryph.
         /// </summary>
         public ServiceClientCredentials Credentials { get; private set; }
 
@@ -58,31 +58,31 @@ namespace Haipa.IdentityClient
         public virtual IClientsOperations Clients { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='httpClient'>
         /// HttpClient to be used
         /// </param>
         /// <param name='disposeHttpClient'>
-        /// True: will dispose the provided httpClient on calling HaipaIdentityClient.Dispose(). False: will not dispose provided httpClient</param>
-        protected HaipaIdentityClient(HttpClient httpClient, bool disposeHttpClient) : base(httpClient, disposeHttpClient)
+        /// True: will dispose the provided httpClient on calling EryphIdentityClient.Dispose(). False: will not dispose provided httpClient</param>
+        protected EryphIdentityClient(HttpClient httpClient, bool disposeHttpClient) : base(httpClient, disposeHttpClient)
         {
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
         /// </param>
-        protected HaipaIdentityClient(params DelegatingHandler[] handlers) : base(handlers)
+        protected EryphIdentityClient(params DelegatingHandler[] handlers) : base(handlers)
         {
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='rootHandler'>
         /// Optional. The http client handler used to handle http transport.
@@ -90,13 +90,13 @@ namespace Haipa.IdentityClient
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
         /// </param>
-        protected HaipaIdentityClient(HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : base(rootHandler, handlers)
+        protected EryphIdentityClient(HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : base(rootHandler, handlers)
         {
             Initialize();
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -107,7 +107,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        protected HaipaIdentityClient(System.Uri baseUri, params DelegatingHandler[] handlers) : this(handlers)
+        protected EryphIdentityClient(System.Uri baseUri, params DelegatingHandler[] handlers) : this(handlers)
         {
             if (baseUri == null)
             {
@@ -117,7 +117,7 @@ namespace Haipa.IdentityClient
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
@@ -131,7 +131,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        protected HaipaIdentityClient(System.Uri baseUri, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
+        protected EryphIdentityClient(System.Uri baseUri, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
         {
             if (baseUri == null)
             {
@@ -141,10 +141,10 @@ namespace Haipa.IdentityClient
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='credentials'>
-        /// Required. Credentials needed for the client to connect to Haipa.
+        /// Required. Credentials needed for the client to connect to eryph.
         /// </param>
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
@@ -152,7 +152,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public HaipaIdentityClient(ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
+        public EryphIdentityClient(ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
         {
             if (credentials == null)
             {
@@ -166,20 +166,20 @@ namespace Haipa.IdentityClient
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='credentials'>
-        /// Required. Credentials needed for the client to connect to Haipa.
+        /// Required. Credentials needed for the client to connect to eryph.
         /// </param>
         /// <param name='httpClient'>
         /// HttpClient to be used
         /// </param>
         /// <param name='disposeHttpClient'>
-        /// True: will dispose the provided httpClient on calling HaipaIdentityClient.Dispose(). False: will not dispose provided httpClient</param>
+        /// True: will dispose the provided httpClient on calling EryphIdentityClient.Dispose(). False: will not dispose provided httpClient</param>
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public HaipaIdentityClient(ServiceClientCredentials credentials, HttpClient httpClient, bool disposeHttpClient) : this(httpClient, disposeHttpClient)
+        public EryphIdentityClient(ServiceClientCredentials credentials, HttpClient httpClient, bool disposeHttpClient) : this(httpClient, disposeHttpClient)
         {
             if (credentials == null)
             {
@@ -193,10 +193,10 @@ namespace Haipa.IdentityClient
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='credentials'>
-        /// Required. Credentials needed for the client to connect to Haipa.
+        /// Required. Credentials needed for the client to connect to eryph.
         /// </param>
         /// <param name='rootHandler'>
         /// Optional. The http client handler used to handle http transport.
@@ -207,7 +207,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public HaipaIdentityClient(ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
+        public EryphIdentityClient(ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
         {
             if (credentials == null)
             {
@@ -221,13 +221,13 @@ namespace Haipa.IdentityClient
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
         /// </param>
         /// <param name='credentials'>
-        /// Required. Credentials needed for the client to connect to Haipa.
+        /// Required. Credentials needed for the client to connect to eryph.
         /// </param>
         /// <param name='handlers'>
         /// Optional. The delegating handlers to add to the http client pipeline.
@@ -235,7 +235,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public HaipaIdentityClient(System.Uri baseUri, ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
+        public EryphIdentityClient(System.Uri baseUri, ServiceClientCredentials credentials, params DelegatingHandler[] handlers) : this(handlers)
         {
             if (baseUri == null)
             {
@@ -254,13 +254,13 @@ namespace Haipa.IdentityClient
         }
 
         /// <summary>
-        /// Initializes a new instance of the HaipaIdentityClient class.
+        /// Initializes a new instance of the EryphIdentityClient class.
         /// </summary>
         /// <param name='baseUri'>
         /// Optional. The base URI of the service.
         /// </param>
         /// <param name='credentials'>
-        /// Required. Credentials needed for the client to connect to Haipa.
+        /// Required. Credentials needed for the client to connect to eryph.
         /// </param>
         /// <param name='rootHandler'>
         /// Optional. The http client handler used to handle http transport.
@@ -271,7 +271,7 @@ namespace Haipa.IdentityClient
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when a required parameter is null
         /// </exception>
-        public HaipaIdentityClient(System.Uri baseUri, ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
+        public EryphIdentityClient(System.Uri baseUri, ServiceClientCredentials credentials, HttpClientHandler rootHandler, params DelegatingHandler[] handlers) : this(rootHandler, handlers)
         {
             if (baseUri == null)
             {
@@ -328,7 +328,7 @@ namespace Haipa.IdentityClient
                     }
             };
             CustomInitialize();
-            DeserializationSettings.Converters.Add(new Haipa.ClientRuntime.ApiErrorJsonConverter());
+            DeserializationSettings.Converters.Add(new Eryph.ClientRuntime.ApiErrorJsonConverter());
         }
     }
 }

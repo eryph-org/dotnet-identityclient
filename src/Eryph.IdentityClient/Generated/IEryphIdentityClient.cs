@@ -2,9 +2,9 @@
 // MIT
 // </auto-generated>
 
-namespace Haipa.IdentityClient
+namespace Eryph.IdentityClient
 {
-    using Haipa.ClientRuntime;
+    using Eryph.ClientRuntime;
     using Microsoft.Rest;
     using Models;
     using Newtonsoft.Json;
@@ -12,7 +12,7 @@ namespace Haipa.IdentityClient
     /// <summary>
     /// Haipa Identity Api
     /// </summary>
-    public partial interface IHaipaIdentityClient : System.IDisposable
+    public partial interface IEryphIdentityClient : System.IDisposable
     {
         /// <summary>
         /// The base URI of the service.
@@ -30,7 +30,7 @@ namespace Haipa.IdentityClient
         JsonSerializerSettings DeserializationSettings { get; }
 
         /// <summary>
-        /// Credentials needed for the client to connect to Haipa.
+        /// Credentials needed for the client to connect to eryph.
         /// </summary>
         ServiceClientCredentials Credentials { get; }
 
