@@ -2,15 +2,15 @@
 using System.Management.Automation;
 using System.Runtime.Serialization;
 using System.Security;
-using Haipa.IdentityClient.Models;
+using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
-namespace Haipa.IdentityClient.Commands
+namespace Eryph.IdentityClient.Commands
 {
     [PublicAPI]
-    [Cmdlet(VerbsCommon.New, "HaipaClient", DefaultParameterSetName = "create")]
+    [Cmdlet(VerbsCommon.New, "EryphClient", DefaultParameterSetName = "create")]
     [OutputType(typeof(CreatedClient), typeof(Client), ParameterSetName = new[] {"create", "createAndSave"})]
-    public class NewHaipaClientCommand : IdentityCmdLet
+    public class NewEryphClientCommand : IdentityCmdLet
     {
         [Parameter(
             Position = 0,
@@ -58,7 +58,7 @@ namespace Haipa.IdentityClient.Commands
         protected override void ProcessRecord()
         {
             var clientCredentials = GetClientCredentials();
-            using (var identityClient = new HaipaIdentityClient(GetCredentials("identity:clients:write:all")))
+            using (var identityClient = new EryphIdentityClient(GetCredentials("identity:clients:write:all")))
             {
                 foreach (var name in Name)
                 {
@@ -72,9 +72,9 @@ namespace Haipa.IdentityClient.Commands
                     if (AddToConfiguration)
                     {
                         var asDefault = !AsDefault ? "" : " -AsDefault";
-                        InvokeCommand.InvokeScript(
-                            $@"$args[0] | New-HaipaClientCredentials -Id ""{result.Id}"" -IdentityEndpoint ""{clientCredentials.IdentityProvider}"" -Configuration ""{clientCredentials.Configuration}""
-                            | Add-HaipaClientConfiguration -Name ""{result.Name}""{asDefault}", result.Key);
+                       InvokeCommand.InvokeScript(
+                            $@"$args[0] | New-EryphClientCredentials -Id ""{result.Id}"" -IdentityEndpoint ""{clientCredentials.IdentityProvider}"" -Configuration ""{clientCredentials.Configuration}"" | Add-EryphClientConfiguration -Name ""{result.Name}""{asDefault}",
+                            result.Key);
 
                         WriteObject(new Client(result.Id, result.Name, result.Description, result.AllowedScopes));
                     }

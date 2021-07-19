@@ -2,10 +2,9 @@
 // MIT
 // </auto-generated>
 
-namespace Haipa.IdentityClient
+namespace Eryph.IdentityClient
 {
-    using Haipa.ClientRuntime;
-    using Haipa.ClientRuntime.OData;
+    using Eryph.ClientRuntime;
     using Models;
     using System.Collections;
     using System.Collections.Generic;
@@ -18,31 +17,11 @@ namespace Haipa.IdentityClient
     public partial interface IClientsOperations
     {
         /// <summary>
-        /// Queries for Clients.
+        /// Creates a new client
         /// </summary>
-        /// <param name='odataQuery'>
-        /// OData parameters to apply to the operation.
-        /// </param>
-        /// <param name='select'>
-        /// Limits the properties returned in the result.
-        /// </param>
-        /// <param name='count'>
-        /// Indicates whether the total count of items within a collection are
-        /// returned in the result.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientList>> ListWithHttpMessagesAsync(Haipa.ClientRuntime.OData.ODataQuery<Client> odataQuery = default(Haipa.ClientRuntime.OData.ODataQuery<Client>), string select = default(string), bool? count = false, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <remarks>
+        /// Creates a client
+        /// </remarks>
         /// <param name='body'>
         /// </param>
         /// <param name='customHeaders'>
@@ -51,14 +30,33 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
+        /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>> CreateWithHttpMessagesAsync(Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <param name='clientId'>
+        Task<Eryph.ClientRuntime.EryphOperationResponse<ClientWithSecrets>> CreateWithHttpMessagesAsync(Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        Task<Eryph.ClientRuntime.EryphOperationResponse<Eryph.ClientRuntime.IPage<Client>>> ListWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Deletes a client
+        /// </summary>
+        /// <remarks>
+        /// Deletes a client
+        /// </remarks>
+        /// <param name='id'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -66,29 +64,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
-        /// Thrown when the operation returned an invalid status code
-        /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<ClientWithSecrets>> NewKeyWithHttpMessagesAsync(string clientId = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <param name='key'>
-        /// </param>
-        /// <param name='select'>
-        /// Limits the properties returned in the result.
-        /// </param>
-        /// <param name='expand'>
-        /// Indicates the related entities to be represented inline. The
-        /// maximum depth is 2.
-        /// </param>
-        /// <param name='customHeaders'>
-        /// The headers that will be added to request.
-        /// </param>
-        /// <param name='cancellationToken'>
-        /// The cancellation token.
-        /// </param>
-        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
+        /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -97,8 +73,14 @@ namespace Haipa.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> GetWithHttpMessagesAsync(string key, string select = default(string), string expand = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <param name='key'>
+        Task<Eryph.ClientRuntime.EryphOperationResponse<ProblemDetails>> DeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Get a client
+        /// </summary>
+        /// <remarks>
+        /// Get a client
+        /// </remarks>
+        /// <param name='id'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -106,7 +88,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
+        /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -115,8 +97,14 @@ namespace Haipa.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<object>> DeleteWithHttpMessagesAsync(string key, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <param name='key'>
+        Task<Eryph.ClientRuntime.EryphOperationResponse<object>> GetWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Updates a client
+        /// </summary>
+        /// <remarks>
+        /// Updates a client
+        /// </remarks>
+        /// <param name='id'>
         /// </param>
         /// <param name='body'>
         /// </param>
@@ -126,7 +114,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
+        /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -135,10 +123,14 @@ namespace Haipa.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> UpdateWithHttpMessagesAsync(string key, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
-        /// <param name='key'>
-        /// </param>
-        /// <param name='body'>
+        Task<Eryph.ClientRuntime.EryphOperationResponse<object>> UpdateWithHttpMessagesAsync(string id, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Updates a client
+        /// </summary>
+        /// <remarks>
+        /// Updates a client
+        /// </remarks>
+        /// <param name='id'>
         /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
@@ -146,7 +138,7 @@ namespace Haipa.IdentityClient
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        /// <exception cref="Haipa.ClientRuntime.ApiServiceException">
+        /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
         /// <exception cref="Microsoft.Rest.SerializationException">
@@ -155,6 +147,25 @@ namespace Haipa.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Haipa.ClientRuntime.HaipaOperationResponse<Client>> ChangeWithHttpMessagesAsync(string key, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Eryph.ClientRuntime.EryphOperationResponse<object>> Update1WithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <param name='nextPageLink'>
+        /// The NextLink from the previous successful call to List operation.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<Eryph.ClientRuntime.EryphOperationResponse<Eryph.ClientRuntime.IPage<Client>>> ListNextWithHttpMessagesAsync(string nextPageLink, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

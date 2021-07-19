@@ -1,13 +1,13 @@
 ﻿using System.Management.Automation;
-using Haipa.IdentityClient.Models;
+using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
-namespace Haipa.IdentityClient.Commands
+namespace Eryph.IdentityClient.Commands
 {
     [PublicAPI]
-    [Cmdlet(VerbsCommon.Remove,"HaipaClient")]
+    [Cmdlet(VerbsCommon.Remove,"EryphClient")]
     [OutputType(typeof(Client))]
-    public class RemoveHaipaClientCommand : IdentityCmdLet
+    public class RemoveEryphClientCommand : IdentityCmdLet
     {
         [Parameter(
             Position = 0,
@@ -17,7 +17,7 @@ namespace Haipa.IdentityClient.Commands
 
         protected override void ProcessRecord()
         {
-            using (var identityClient = new HaipaIdentityClient(GetCredentials("identity:clients:write:all")))
+            using (var identityClient = new EryphIdentityClient(GetCredentials("identity:clients:write:all")))
             {
                 foreach (var id in Id)
                 {

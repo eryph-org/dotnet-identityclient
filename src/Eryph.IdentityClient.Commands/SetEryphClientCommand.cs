@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Management.Automation;
-using Haipa.IdentityClient.Models;
+﻿using System.Management.Automation;
+using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
-namespace Haipa.IdentityClient.Commands
+namespace Eryph.IdentityClient.Commands
 {
     [PublicAPI]
-    [Cmdlet(VerbsCommon.Set,"HaipaClient")]
+    [Cmdlet(VerbsCommon.Set,"EryphClient")]
     [OutputType(typeof(Client))]
-    public class SetHaipaClientCommand : IdentityCmdLet
+    public class SetEryphClientCommand : IdentityCmdLet
     {
         [Parameter(
             Position = 0,
@@ -30,16 +29,13 @@ namespace Haipa.IdentityClient.Commands
 
         protected override void ProcessRecord()
         {
-            using (var identityClient = new HaipaIdentityClient(GetCredentials("identity:clients:write:all")))
+            using (var identityClient = new EryphIdentityClient(GetCredentials("identity:clients:write:all")))
             {
                 foreach (var id in Id)
                 {
 
-                    WriteObject(identityClient.Clients.ChangeWithHttpMessagesAsync(id, 
-                        new Client(null, Name, Description, AllowedScopes), 
-                        new Dictionary<string, List<string>>{
-                            { "prefer", new List<string>{ "return=representation" } }
-                        }).GetAwaiter().GetResult().Body);
+                    WriteObject(identityClient.Clients.UpdateWithHttpMessagesAsync(id, 
+                        new Client(null, Name, Description, AllowedScopes)).GetAwaiter().GetResult().Body);
                     
                 }
 

@@ -1,14 +1,14 @@
 ﻿using System.Management.Automation;
-using Haipa.ClientRuntime.OData;
-using Haipa.IdentityClient.Models;
+using Eryph.ClientRuntime.OData;
+using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
-namespace Haipa.IdentityClient.Commands
+namespace Eryph.IdentityClient.Commands
 {
     [PublicAPI]
-    [Cmdlet(VerbsCommon.Get,"HaipaClient", DefaultParameterSetName = "get client")]
+    [Cmdlet(VerbsCommon.Get,"EryphClient", DefaultParameterSetName = "get client")]
     [OutputType(typeof(Client))]
-    public class GetHaipaClientCommand : IdentityCmdLet
+    public class GetEryphClientCommand : IdentityCmdLet
     {
         [Parameter(
             ParameterSetName = "get client",
@@ -26,7 +26,7 @@ namespace Haipa.IdentityClient.Commands
 
         protected override void ProcessRecord()
         {
-            using (var identityClient = new HaipaIdentityClient(GetCredentials("identity:clients:read:all")))
+            using (var identityClient = new EryphIdentityClient(GetCredentials("identity:clients:read:all")))
             {
                 if (Id != null)
                 {
@@ -42,13 +42,13 @@ namespace Haipa.IdentityClient.Commands
                 {
                     foreach (var name in Name)
                     {
-                        WriteObject(identityClient.Clients.List(new ODataQuery<Client>(x=>x.Name == name)).Value, true);
+                        WriteObject(identityClient.Clients.List(), true);
                     }
 
                     return;
                 }
 
-                WriteObject(identityClient.Clients.List().Value, true);
+                WriteObject(identityClient.Clients.List(), true);
 
             }
 

@@ -2,7 +2,7 @@
 // MIT
 // </auto-generated>
 
-namespace Haipa.IdentityClient.Models
+namespace Eryph.IdentityClient.Models
 {
     using Microsoft.Rest;
     using Newtonsoft.Json;
@@ -10,19 +10,22 @@ namespace Haipa.IdentityClient.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class Client
+    public partial class ClientWithSecrets
     {
         /// <summary>
-        /// Initializes a new instance of the Client class.
+        /// Initializes a new instance of the ClientWithSecrets class.
         /// </summary>
-        public Client()
+        public ClientWithSecrets()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the Client class.
+        /// Initializes a new instance of the ClientWithSecrets class.
         /// </summary>
+        /// <param name="key">private Key of client</param>
+        /// <param name="keyType">Possible values include: 'RsaPrivateKey',
+        /// 'SharedKey'</param>
         /// <param name="id">Unique identifier for a haipa client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are
         /// allowed.</param>
@@ -30,8 +33,10 @@ namespace Haipa.IdentityClient.Models
         /// address of owner</param>
         /// <param name="description">optional description of client</param>
         /// <param name="allowedScopes">allowed scopes of client</param>
-        public Client(string id = default(string), string name = default(string), string description = default(string), IList<string> allowedScopes = default(IList<string>))
+        public ClientWithSecrets(string key = default(string), string keyType = default(string), string id = default(string), string name = default(string), string description = default(string), IList<string> allowedScopes = default(IList<string>))
         {
+            Key = key;
+            KeyType = keyType;
             Id = id;
             Name = name;
             Description = description;
@@ -43,6 +48,18 @@ namespace Haipa.IdentityClient.Models
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets private Key of client
+        /// </summary>
+        [JsonProperty(PropertyName = "key")]
+        public string Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'RsaPrivateKey', 'SharedKey'
+        /// </summary>
+        [JsonProperty(PropertyName = "keyType")]
+        public string KeyType { get; set; }
 
         /// <summary>
         /// Gets or sets unique identifier for a haipa client

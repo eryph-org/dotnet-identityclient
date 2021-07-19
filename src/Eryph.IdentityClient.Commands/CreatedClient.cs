@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Haipa.IdentityClient.Commands
+namespace Eryph.IdentityClient.Commands
 {
     [PublicAPI]
     public class CreatedClient

@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0;net472</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>    
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="5.3.7">
+    <PackageReference Include="GitVersion.MsBuild" Version="5.6.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Haipa.ClientRuntime.Authentication" Version="0.1.0-ci.20" />
+    <PackageReference Include="Eryph.ClientRuntime.Authentication" Version="0.1.1-ci.13" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="D:\Source\Repos\Haipa\dotnet-identityclient\src\Haipa.IdentityClient\Haipa.IdentityClient.csproj" />
+
+    <ProjectReference Include="..\Eryph.IdentityClient\Eryph.IdentityClient.csproj" />
   </ItemGroup>
 
 </Project>
