@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using System.Management.Automation;
-using System.Runtime.Serialization;
-using System.Security;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
