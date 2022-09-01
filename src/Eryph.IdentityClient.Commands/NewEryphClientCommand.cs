@@ -56,7 +56,7 @@ namespace Eryph.IdentityClient.Commands
         protected override void ProcessRecord()
         {
             var clientCredentials = GetClientCredentials();
-            using (var identityClient = new EryphIdentityClient(GetCredentials("identity:clients:write:all")))
+            using (var identityClient = new EryphIdentityClient(GetEndpointUri(),GetCredentials("identity:clients:write:all")))
             {
                 foreach (var name in Name)
                 {
