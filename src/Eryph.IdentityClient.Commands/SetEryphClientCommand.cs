@@ -29,7 +29,7 @@ namespace Eryph.IdentityClient.Commands
 
         protected override void ProcessRecord()
         {
-            using (var identityClient = new EryphIdentityClient(GetCredentials("identity:clients:write:all")))
+            using (var identityClient = new EryphIdentityClient(GetEndpointUri(),GetCredentials("identity:clients:write:all")))
             {
                 foreach (var id in Id)
                 {
