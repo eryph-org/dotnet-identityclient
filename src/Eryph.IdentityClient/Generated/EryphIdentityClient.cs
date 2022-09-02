@@ -16,7 +16,7 @@ namespace Eryph.IdentityClient
     using System.Net.Http;
 
     /// <summary>
-    /// Haipa Identity Api
+    /// Eryph Identity Api
     /// </summary>
     public partial class EryphIdentityClient : ServiceClient<EryphIdentityClient>, IEryphIdentityClient, IEryphClient
     {
@@ -299,7 +299,7 @@ namespace Eryph.IdentityClient
         private void Initialize()
         {
             Clients = new ClientsOperations(this);
-            BaseUri = new System.Uri("https://localhost:62189/identity");
+            BaseUri = new System.Uri("https://localhost:53065/identity");
             AcceptLanguage = "en-US";
             GenerateClientRequestId = true;
             SerializationSettings = new JsonSerializerSettings

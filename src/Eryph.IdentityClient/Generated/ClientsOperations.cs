@@ -130,7 +130,7 @@ namespace Eryph.IdentityClient
             {
                 _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(body, Client.SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
-                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
             }
             // Set Credentials
             if (Client.Credentials != null)
@@ -219,6 +219,12 @@ namespace Eryph.IdentityClient
             return _result;
         }
 
+        /// <summary>
+        /// Lists clients
+        /// </summary>
+        /// <remarks>
+        /// Lists clients
+        /// </remarks>
         /// <param name='customHeaders'>
         /// Headers that will be added to request.
         /// </param>
@@ -392,9 +398,6 @@ namespace Eryph.IdentityClient
         /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
@@ -404,7 +407,7 @@ namespace Eryph.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Eryph.ClientRuntime.EryphOperationResponse<ProblemDetails>> DeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Eryph.ClientRuntime.EryphOperationResponse> DeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (id == null)
             {
@@ -484,7 +487,7 @@ namespace Eryph.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Eryph.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
@@ -519,30 +522,12 @@ namespace Eryph.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Eryph.ClientRuntime.EryphOperationResponse<ProblemDetails>();
+            var _result = new Eryph.ClientRuntime.EryphOperationResponse();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
             {
                 _result.RequestId = _httpResponse.Headers.GetValues("x-ms-request-id").FirstOrDefault();
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ProblemDetails>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
             }
             if (_shouldTrace)
             {
@@ -580,7 +565,7 @@ namespace Eryph.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Eryph.ClientRuntime.EryphOperationResponse<object>> GetWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Eryph.ClientRuntime.EryphOperationResponse<Client>> GetWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (id == null)
             {
@@ -660,7 +645,7 @@ namespace Eryph.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 200 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Eryph.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
@@ -695,7 +680,7 @@ namespace Eryph.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Eryph.ClientRuntime.EryphOperationResponse<object>();
+            var _result = new Eryph.ClientRuntime.EryphOperationResponse<Client>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -709,24 +694,6 @@ namespace Eryph.IdentityClient
                 try
                 {
                     _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Client>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ProblemDetails>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -776,7 +743,7 @@ namespace Eryph.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Eryph.ClientRuntime.EryphOperationResponse<object>> UpdateWithHttpMessagesAsync(string id, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Eryph.ClientRuntime.EryphOperationResponse<Client>> UpdateWithHttpMessagesAsync(string id, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (id == null)
             {
@@ -845,7 +812,7 @@ namespace Eryph.IdentityClient
             {
                 _requestContent = Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(body, Client.SerializationSettings);
                 _httpRequest.Content = new StringContent(_requestContent, System.Text.Encoding.UTF8);
-                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json; charset=utf-8");
+                _httpRequest.Content.Headers.ContentType =System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json; charset=utf-8");
             }
             // Set Credentials
             if (Client.Credentials != null)
@@ -867,7 +834,7 @@ namespace Eryph.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 201 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Eryph.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
@@ -902,7 +869,7 @@ namespace Eryph.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Eryph.ClientRuntime.EryphOperationResponse<object>();
+            var _result = new Eryph.ClientRuntime.EryphOperationResponse<Client>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -910,30 +877,12 @@ namespace Eryph.IdentityClient
                 _result.RequestId = _httpResponse.Headers.GetValues("x-ms-request-id").FirstOrDefault();
             }
             // Deserialize Response
-            if ((int)_statusCode == 201)
+            if ((int)_statusCode == 200)
             {
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
                     _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<Client>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ProblemDetails>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -953,10 +902,10 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary>
-        /// Updates a client
+        /// Updates a client key
         /// </summary>
         /// <remarks>
-        /// Updates a client
+        /// Updates a client key
         /// </remarks>
         /// <param name='id'>
         /// </param>
@@ -981,7 +930,7 @@ namespace Eryph.IdentityClient
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<Eryph.ClientRuntime.EryphOperationResponse<object>> Update1WithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Eryph.ClientRuntime.EryphOperationResponse<ClientWithSecrets>> NewKeyWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (id == null)
             {
@@ -996,7 +945,7 @@ namespace Eryph.IdentityClient
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("id", id);
                 tracingParameters.Add("cancellationToken", cancellationToken);
-                ServiceClientTracing.Enter(_invocationId, this, "Update1", tracingParameters);
+                ServiceClientTracing.Enter(_invocationId, this, "NewKey", tracingParameters);
             }
             // Construct URL
             var _baseUrl = Client.BaseUri.AbsoluteUri;
@@ -1061,7 +1010,7 @@ namespace Eryph.IdentityClient
             HttpStatusCode _statusCode = _httpResponse.StatusCode;
             cancellationToken.ThrowIfCancellationRequested();
             string _responseContent = null;
-            if ((int)_statusCode != 201 && (int)_statusCode != 404)
+            if ((int)_statusCode != 200)
             {
                 var ex = new Eryph.ClientRuntime.ApiServiceException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
                 try
@@ -1096,7 +1045,7 @@ namespace Eryph.IdentityClient
                 throw ex;
             }
             // Create Result
-            var _result = new Eryph.ClientRuntime.EryphOperationResponse<object>();
+            var _result = new Eryph.ClientRuntime.EryphOperationResponse<ClientWithSecrets>();
             _result.Request = _httpRequest;
             _result.Response = _httpResponse;
             if (_httpResponse.Headers.Contains("x-ms-request-id"))
@@ -1104,30 +1053,12 @@ namespace Eryph.IdentityClient
                 _result.RequestId = _httpResponse.Headers.GetValues("x-ms-request-id").FirstOrDefault();
             }
             // Deserialize Response
-            if ((int)_statusCode == 201)
+            if ((int)_statusCode == 200)
             {
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
                     _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ClientWithSecrets>(_responseContent, Client.DeserializationSettings);
-                }
-                catch (JsonException ex)
-                {
-                    _httpRequest.Dispose();
-                    if (_httpResponse != null)
-                    {
-                        _httpResponse.Dispose();
-                    }
-                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
-                }
-            }
-            // Deserialize Response
-            if ((int)_statusCode == 404)
-            {
-                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                try
-                {
-                    _result.Body = Microsoft.Rest.Serialization.SafeJsonConvert.DeserializeObject<ProblemDetails>(_responseContent, Client.DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -1146,6 +1077,12 @@ namespace Eryph.IdentityClient
             return _result;
         }
 
+        /// <summary>
+        /// Lists clients
+        /// </summary>
+        /// <remarks>
+        /// Lists clients
+        /// </remarks>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.
         /// </param>

@@ -23,24 +23,24 @@ namespace Eryph.IdentityClient.Models
         /// <summary>
         /// Initializes a new instance of the ClientWithSecrets class.
         /// </summary>
-        /// <param name="key">private Key of client</param>
-        /// <param name="keyType">Possible values include: 'RsaPrivateKey',
-        /// 'SharedKey'</param>
-        /// <param name="id">Unique identifier for a haipa client
+        /// <param name="id">Unique identifier for a eryph client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are
         /// allowed.</param>
         /// <param name="name">human readable name of client, for example email
         /// address of owner</param>
         /// <param name="description">optional description of client</param>
         /// <param name="allowedScopes">allowed scopes of client</param>
-        public ClientWithSecrets(string key = default(string), string keyType = default(string), string id = default(string), string name = default(string), string description = default(string), IList<string> allowedScopes = default(IList<string>))
+        /// <param name="key">private Key of client</param>
+        /// <param name="keyType">Possible values include: 'RsaPrivateKey',
+        /// 'SharedKey'</param>
+        public ClientWithSecrets(string id = default(string), string name = default(string), string description = default(string), IList<string> allowedScopes = default(IList<string>), string key = default(string), string keyType = default(string))
         {
-            Key = key;
-            KeyType = keyType;
             Id = id;
             Name = name;
             Description = description;
             AllowedScopes = allowedScopes;
+            Key = key;
+            KeyType = keyType;
             CustomInit();
         }
 
@@ -50,19 +50,7 @@ namespace Eryph.IdentityClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets private Key of client
-        /// </summary>
-        [JsonProperty(PropertyName = "key")]
-        public string Key { get; set; }
-
-        /// <summary>
-        /// Gets or sets possible values include: 'RsaPrivateKey', 'SharedKey'
-        /// </summary>
-        [JsonProperty(PropertyName = "keyType")]
-        public string KeyType { get; set; }
-
-        /// <summary>
-        /// Gets or sets unique identifier for a haipa client
+        /// Gets or sets unique identifier for a eryph client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
         /// </summary>
         [JsonProperty(PropertyName = "id")]
@@ -86,6 +74,18 @@ namespace Eryph.IdentityClient.Models
         /// </summary>
         [JsonProperty(PropertyName = "allowedScopes")]
         public IList<string> AllowedScopes { get; set; }
+
+        /// <summary>
+        /// Gets or sets private Key of client
+        /// </summary>
+        [JsonProperty(PropertyName = "key")]
+        public string Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets possible values include: 'RsaPrivateKey', 'SharedKey'
+        /// </summary>
+        [JsonProperty(PropertyName = "keyType")]
+        public string KeyType { get; set; }
 
         /// <summary>
         /// Validate the object.

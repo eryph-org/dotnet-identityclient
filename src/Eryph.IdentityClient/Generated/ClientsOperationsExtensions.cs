@@ -52,6 +52,12 @@ namespace Eryph.IdentityClient
                 }
             }
 
+            /// <summary>
+            /// Lists clients
+            /// </summary>
+            /// <remarks>
+            /// Lists clients
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -60,6 +66,12 @@ namespace Eryph.IdentityClient
                 return operations.ListAsync().GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Lists clients
+            /// </summary>
+            /// <remarks>
+            /// Lists clients
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -85,9 +97,9 @@ namespace Eryph.IdentityClient
             /// </param>
             /// <param name='id'>
             /// </param>
-            public static ProblemDetails Delete(this IClientsOperations operations, string id)
+            public static void Delete(this IClientsOperations operations, string id)
             {
-                return operations.DeleteAsync(id).GetAwaiter().GetResult();
+                operations.DeleteAsync(id).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -104,12 +116,9 @@ namespace Eryph.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ProblemDetails> DeleteAsync(this IClientsOperations operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task DeleteAsync(this IClientsOperations operations, string id, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.DeleteWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                (await operations.DeleteWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
             /// <summary>
@@ -123,7 +132,7 @@ namespace Eryph.IdentityClient
             /// </param>
             /// <param name='id'>
             /// </param>
-            public static object Get(this IClientsOperations operations, string id)
+            public static Client Get(this IClientsOperations operations, string id)
             {
                 return operations.GetAsync(id).GetAwaiter().GetResult();
             }
@@ -142,7 +151,7 @@ namespace Eryph.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> GetAsync(this IClientsOperations operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Client> GetAsync(this IClientsOperations operations, string id, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -163,7 +172,7 @@ namespace Eryph.IdentityClient
             /// </param>
             /// <param name='body'>
             /// </param>
-            public static object Update(this IClientsOperations operations, string id, Client body = default(Client))
+            public static Client Update(this IClientsOperations operations, string id, Client body = default(Client))
             {
                 return operations.UpdateAsync(id, body).GetAwaiter().GetResult();
             }
@@ -184,7 +193,7 @@ namespace Eryph.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> UpdateAsync(this IClientsOperations operations, string id, Client body = default(Client), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<Client> UpdateAsync(this IClientsOperations operations, string id, Client body = default(Client), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.UpdateWithHttpMessagesAsync(id, body, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -193,26 +202,26 @@ namespace Eryph.IdentityClient
             }
 
             /// <summary>
-            /// Updates a client
+            /// Updates a client key
             /// </summary>
             /// <remarks>
-            /// Updates a client
+            /// Updates a client key
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
             /// <param name='id'>
             /// </param>
-            public static object Update1(this IClientsOperations operations, string id)
+            public static ClientWithSecrets NewKey(this IClientsOperations operations, string id)
             {
-                return operations.Update1Async(id).GetAwaiter().GetResult();
+                return operations.NewKeyAsync(id).GetAwaiter().GetResult();
             }
 
             /// <summary>
-            /// Updates a client
+            /// Updates a client key
             /// </summary>
             /// <remarks>
-            /// Updates a client
+            /// Updates a client key
             /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
@@ -222,14 +231,20 @@ namespace Eryph.IdentityClient
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> Update1Async(this IClientsOperations operations, string id, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ClientWithSecrets> NewKeyAsync(this IClientsOperations operations, string id, CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.Update1WithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
+                using (var _result = await operations.NewKeyWithHttpMessagesAsync(id, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
             }
 
+            /// <summary>
+            /// Lists clients
+            /// </summary>
+            /// <remarks>
+            /// Lists clients
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
@@ -241,6 +256,12 @@ namespace Eryph.IdentityClient
                 return operations.ListNextAsync(nextPageLink).GetAwaiter().GetResult();
             }
 
+            /// <summary>
+            /// Lists clients
+            /// </summary>
+            /// <remarks>
+            /// Lists clients
+            /// </remarks>
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>

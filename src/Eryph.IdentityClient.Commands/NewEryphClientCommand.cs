@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
@@ -70,10 +71,13 @@ namespace Eryph.IdentityClient.Commands
                     if (AddToConfiguration)
                     {
                         var asDefault = !AsDefault ? "" : " -AsDefault";
-                       InvokeCommand.InvokeScript(
-                            $@"$args[0] | New-EryphClientCredentials -Id ""{result.Id}"" -IdentityEndpoint ""{clientCredentials.IdentityProvider}"" -Configuration ""{clientCredentials.Configuration}"" | Add-EryphClientConfiguration -Name ""{result.Name}""{asDefault}",
-                            result.Key);
 
+                        var cmd =
+                            $@"$args[0] | New-EryphClientCredentials -Id ""{result.Id}"" -IdentityEndpoint ""{clientCredentials.IdentityProvider}"" -Configuration ""{clientCredentials.Configuration}""| Add-EryphClientConfiguration -Name ""{result.Name}""{asDefault}";
+
+                        var script = InvokeCommand.NewScriptBlock(cmd);
+                        script.Invoke(result.Key);
+                        
                         WriteObject(new Client(result.Id, result.Name, result.Description, result.AllowedScopes));
                     }
                     else
