@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
@@ -33,10 +34,20 @@ namespace Eryph.IdentityClient.Commands
             {
                 foreach (var id in Id)
                 {
+                    var client =
+                        identityClient.Clients.Get(id);
 
-                    WriteObject(identityClient.Clients.UpdateWithHttpMessagesAsync(id, 
-                        new Client(null, Name, Description, AllowedScopes)).GetAwaiter().GetResult().Body);
-                    
+                    if(AllowedScopes != null)
+                        client.AllowedScopes = AllowedScopes;
+
+                    if(Name != null)
+                        client.Name = Name;
+
+                    if (Description != null)
+                        client.Description = Description;
+
+                    WriteObject(identityClient.Clients.Update(id, client));
+
                 }
 
             }

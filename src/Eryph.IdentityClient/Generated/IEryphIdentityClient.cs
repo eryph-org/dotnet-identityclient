@@ -10,7 +10,7 @@ namespace Eryph.IdentityClient
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Haipa Identity Api
+    /// Eryph Identity Api
     /// </summary>
     public partial interface IEryphIdentityClient : System.IDisposable
     {

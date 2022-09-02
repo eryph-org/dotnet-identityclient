@@ -37,6 +37,12 @@ namespace Eryph.IdentityClient
         /// Thrown when unable to deserialize the response
         /// </exception>
         Task<Eryph.ClientRuntime.EryphOperationResponse<ClientWithSecrets>> CreateWithHttpMessagesAsync(Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Lists clients
+        /// </summary>
+        /// <remarks>
+        /// Lists clients
+        /// </remarks>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -67,13 +73,10 @@ namespace Eryph.IdentityClient
         /// <exception cref="Eryph.ClientRuntime.ApiServiceException">
         /// Thrown when the operation returned an invalid status code
         /// </exception>
-        /// <exception cref="Microsoft.Rest.SerializationException">
-        /// Thrown when unable to deserialize the response
-        /// </exception>
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Eryph.ClientRuntime.EryphOperationResponse<ProblemDetails>> DeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Eryph.ClientRuntime.EryphOperationResponse> DeleteWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Get a client
         /// </summary>
@@ -97,7 +100,7 @@ namespace Eryph.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Eryph.ClientRuntime.EryphOperationResponse<object>> GetWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Eryph.ClientRuntime.EryphOperationResponse<Client>> GetWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// Updates a client
         /// </summary>
@@ -123,12 +126,12 @@ namespace Eryph.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Eryph.ClientRuntime.EryphOperationResponse<object>> UpdateWithHttpMessagesAsync(string id, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Eryph.ClientRuntime.EryphOperationResponse<Client>> UpdateWithHttpMessagesAsync(string id, Client body = default(Client), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
-        /// Updates a client
+        /// Updates a client key
         /// </summary>
         /// <remarks>
-        /// Updates a client
+        /// Updates a client key
         /// </remarks>
         /// <param name='id'>
         /// </param>
@@ -147,7 +150,13 @@ namespace Eryph.IdentityClient
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<Eryph.ClientRuntime.EryphOperationResponse<object>> Update1WithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Eryph.ClientRuntime.EryphOperationResponse<ClientWithSecrets>> NewKeyWithHttpMessagesAsync(string id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Lists clients
+        /// </summary>
+        /// <remarks>
+        /// Lists clients
+        /// </remarks>
         /// <param name='nextPageLink'>
         /// The NextLink from the previous successful call to List operation.
         /// </param>

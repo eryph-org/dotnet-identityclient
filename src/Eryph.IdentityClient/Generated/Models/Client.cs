@@ -23,7 +23,7 @@ namespace Eryph.IdentityClient.Models
         /// <summary>
         /// Initializes a new instance of the Client class.
         /// </summary>
-        /// <param name="id">Unique identifier for a haipa client
+        /// <param name="id">Unique identifier for a eryph client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are
         /// allowed.</param>
         /// <param name="name">human readable name of client, for example email
@@ -45,7 +45,7 @@ namespace Eryph.IdentityClient.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets unique identifier for a haipa client
+        /// Gets or sets unique identifier for a eryph client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
         /// </summary>
         [JsonProperty(PropertyName = "id")]
