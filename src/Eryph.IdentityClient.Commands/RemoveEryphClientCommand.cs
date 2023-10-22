@@ -17,13 +17,10 @@ namespace Eryph.IdentityClient.Commands
 
         protected override void ProcessRecord()
         {
-            using (var identityClient = new EryphIdentityClient(GetEndpointUri(),GetCredentials("identity:clients:write:all")))
+            var identityClient = Factory.CreateClientsClient();
+            foreach (var id in Id)
             {
-                foreach (var id in Id)
-                {
-                    identityClient.Clients.Delete(id);
-
-                }
+                identityClient.Delete(id);
 
             }
         }

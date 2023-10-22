@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Management.Automation;
-using System.Management.Automation.Runspaces;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
@@ -57,43 +56,62 @@ namespace Eryph.IdentityClient.Commands
         protected override void ProcessRecord()
         {
             var clientCredentials = GetClientCredentials();
-            using (var identityClient = new EryphIdentityClient(GetEndpointUri(),GetCredentials("identity:clients:write:all")))
+            var identityClient = Factory.CreateClientsClient();
+            foreach (var name in Name)
             {
-                foreach (var name in Name)
+                var eryphClient = new Client
                 {
-                    var result = identityClient.Clients.Create(new Client
-                    {
-                        Name = name,
-                        Description = Description,
-                        AllowedScopes = AllowedScopes
-                    });
-
-                    if (AddToConfiguration)
-                    {
-                        var asDefault = !AsDefault ? "" : " -AsDefault";
-
-                        var cmd =
-                            $@"$args[0] | New-EryphClientCredentials -Id ""{result.Id}"" -IdentityEndpoint ""{clientCredentials.IdentityProvider}"" -Configuration ""{clientCredentials.Configuration}""| Add-EryphClientConfiguration -Name ""{result.Name}""{asDefault}";
-
-                        var script = InvokeCommand.NewScriptBlock(cmd);
-                        script.Invoke(result.Key);
-                        
-                        WriteObject(new Client(result.Id, result.Name, result.Description, result.AllowedScopes));
-                    }
-                    else
-                        WriteObject(new CreatedClient
-                        {
-                            Id = result.Id,
-                            Name = result.Name,
-                            AllowedScopes = result.AllowedScopes.ToArray(),
-                            Description = result.Description,
-                            IdentityProvider = clientCredentials.IdentityProvider,
-                            PrivateKey = result.Key
-                        });
-
-
+                    Name = name,
+                    Description = Description
+                };
+                foreach (var allowedScope in AllowedScopes)
+                {
+                    eryphClient.AllowedScopes.Add(allowedScope);
 
                 }
+
+                var response = identityClient.Create(eryphClient);
+                if (!response.HasValue)
+                    return;
+
+                var result = response.Value;
+
+                if (AddToConfiguration)
+                {
+                    var asDefault = !AsDefault ? "" : " -AsDefault";
+
+                    var cmd =
+                        $@"$args[0] | New-EryphClientCredentials -Id ""{result.Id}"" -IdentityEndpoint ""{clientCredentials.IdentityProvider}"" -Configuration ""{clientCredentials.Configuration}""| Add-EryphClientConfiguration -Name ""{result.Name}""{asDefault}";
+
+                    var script = InvokeCommand.NewScriptBlock(cmd);
+                    script.Invoke(result.Key);
+
+                    eryphClient = new Client
+                    {
+                        Id = result.Id,
+                        Name = result.Name,
+                        Description = result.Description
+                    };
+                    foreach (var allowedScope in result.AllowedScopes)
+                    {
+                        eryphClient.AllowedScopes.Add(allowedScope);
+
+                    }
+
+                    WriteObject(eryphClient);
+                }
+                else
+                    WriteObject(new CreatedClient
+                    {
+                        Id = result.Id,
+                        Name = result.Name,
+                        AllowedScopes = result.AllowedScopes.ToArray(),
+                        Description = result.Description,
+                        IdentityProvider = clientCredentials.IdentityProvider,
+                        PrivateKey = result.Key
+                    });
+
+
 
             }
         }

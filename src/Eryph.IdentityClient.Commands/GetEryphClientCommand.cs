@@ -1,5 +1,5 @@
-﻿using System.Management.Automation;
-using Eryph.ClientRuntime.OData;
+﻿using System.Linq;
+using System.Management.Automation;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
@@ -26,29 +26,31 @@ namespace Eryph.IdentityClient.Commands
 
         protected override void ProcessRecord()
         {
-            using (var identityClient = new EryphIdentityClient(GetEndpointUri(), GetCredentials("identity:clients:read:all")))
+            var identityClient = Factory.CreateClientsClient();
+
+            if (Id != null)
             {
-                if (Id != null)
+                foreach (var id in Id)
                 {
-                    foreach (var id in Id)
-                    {
-                        WriteObject(identityClient.Clients.Get(id));
-                    }
-
-                    return;
+                    var response = identityClient.Get(id);
+                    if(response.HasValue)
+                        WriteObject(response.Value);
                 }
 
-                if (Name != null)
-                {
-                    foreach (var name in Name)
-                    {
-                        WriteObject(identityClient.Clients.List(), true);
-                    }
+                return;
+            }
 
-                    return;
+            foreach (var client in identityClient.List())
+            {
+                if (Stopping) break;
+
+                if(Name != null)
+                {
+                    if (Name.Contains(client.Name))
+                        WriteObject(client);
                 }
 
-                WriteObject(identityClient.Clients.List(), true);
+                WriteObject(client);
 
             }
 
