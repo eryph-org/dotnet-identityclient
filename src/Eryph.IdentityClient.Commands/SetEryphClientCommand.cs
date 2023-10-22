@@ -30,15 +30,22 @@ namespace Eryph.IdentityClient.Commands
 
         protected override void ProcessRecord()
         {
-            using (var identityClient = new EryphIdentityClient(GetEndpointUri(),GetCredentials("identity:clients:write:all")))
+            var identityClient = Factory.CreateClientsClient();
             {
                 foreach (var id in Id)
                 {
                     var client =
-                        identityClient.Clients.Get(id);
+                        identityClient.Get(id)?.Value;
 
-                    if(AllowedScopes != null)
-                        client.AllowedScopes = AllowedScopes;
+                    if (client == null)
+                        return;
+
+                    if (AllowedScopes != null)
+                    {
+                        client.AllowedScopes.Clear();
+                        foreach (var scope in AllowedScopes)
+                            client.AllowedScopes.Add(scope);
+                    }
 
                     if(Name != null)
                         client.Name = Name;
@@ -46,7 +53,8 @@ namespace Eryph.IdentityClient.Commands
                     if (Description != null)
                         client.Description = Description;
 
-                    WriteObject(identityClient.Clients.Update(id, client));
+                    var response = identityClient.Update(id, client);
+                    WriteObject(response.Value);
 
                 }
 

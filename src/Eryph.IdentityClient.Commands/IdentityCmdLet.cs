@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Management.Automation;
 using Eryph.ClientRuntime.Configuration;
 using Eryph.ClientRuntime.Powershell;
 using JetBrains.Annotations;
-using Microsoft.Rest;
 
 namespace Eryph.IdentityClient.Commands
 {
@@ -10,10 +10,43 @@ namespace Eryph.IdentityClient.Commands
     public abstract class IdentityCmdLet : EryphCmdLet
     {
 
-        protected ServiceClientCredentials GetCredentials(params string[] scopes)
+        protected IdentityClientsFactory Factory;
+
+        protected bool IsDebugEnabled
         {
-            return ServiceClientCredentialsCache.Instance.GetServiceCredentials(GetClientCredentials(), scopes).GetAwaiter().GetResult();
+            get
+            {
+                bool debug;
+                var containsDebug = MyInvocation.BoundParameters.ContainsKey("Debug");
+                if (containsDebug)
+                    debug = ((SwitchParameter)MyInvocation.BoundParameters["Debug"]).ToBool();
+                else
+                    debug = (ActionPreference)GetVariableValue("DebugPreference") != ActionPreference.SilentlyContinue;
+
+                return debug;
+            }
         }
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            var options = new EryphIdentityClientOptions(GetClientCredentials())
+            {
+                Diagnostics =
+                {
+                    IsDistributedTracingEnabled = true,
+                    IsLoggingEnabled = IsDebugEnabled,
+                    IsLoggingContentEnabled = IsDebugEnabled
+                }
+            };
+
+
+            Factory = new IdentityClientsFactory(
+                options, GetEndpointUri());
+
+        }
+
 
         protected Uri GetEndpointUri()
         {
