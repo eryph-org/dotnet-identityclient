@@ -5,38 +5,40 @@
 
 #nullable disable
 
+using System;
 using System.Collections.Generic;
 using Azure.Core;
 
 namespace Eryph.IdentityClient.Models
 {
-    /// <summary> The ClientWithSecrets. </summary>
-    public partial class ClientWithSecrets
+    /// <summary> The ClientWithSecret. </summary>
+    public partial class ClientWithSecret
     {
-        /// <summary> Initializes a new instance of ClientWithSecrets. </summary>
-        internal ClientWithSecrets()
+        /// <summary> Initializes a new instance of ClientWithSecret. </summary>
+        internal ClientWithSecret()
         {
             AllowedScopes = new ChangeTrackingList<string>();
+            Roles = new ChangeTrackingList<Guid>();
         }
 
-        /// <summary> Initializes a new instance of ClientWithSecrets. </summary>
+        /// <summary> Initializes a new instance of ClientWithSecret. </summary>
         /// <param name="id">
         /// Unique identifier for a eryph client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
         /// </param>
         /// <param name="name"> human readable name of client, for example email address of owner. </param>
-        /// <param name="description"> optional description of client. </param>
         /// <param name="allowedScopes"> allowed scopes of client. </param>
+        /// <param name="roles"> Roles of client. </param>
+        /// <param name="tenantId"> Tenant of client. </param>
         /// <param name="key"> private Key of client. </param>
-        /// <param name="keyType"></param>
-        internal ClientWithSecrets(string id, string name, string description, IReadOnlyList<string> allowedScopes, string key, ClientSecretType? keyType)
+        internal ClientWithSecret(string id, string name, IReadOnlyList<string> allowedScopes, IReadOnlyList<Guid> roles, Guid? tenantId, string key)
         {
             Id = id;
             Name = name;
-            Description = description;
             AllowedScopes = allowedScopes;
+            Roles = roles;
+            TenantId = tenantId;
             Key = key;
-            KeyType = keyType;
         }
 
         /// <summary>
@@ -46,13 +48,13 @@ namespace Eryph.IdentityClient.Models
         public string Id { get; }
         /// <summary> human readable name of client, for example email address of owner. </summary>
         public string Name { get; }
-        /// <summary> optional description of client. </summary>
-        public string Description { get; }
         /// <summary> allowed scopes of client. </summary>
         public IReadOnlyList<string> AllowedScopes { get; }
+        /// <summary> Roles of client. </summary>
+        public IReadOnlyList<Guid> Roles { get; }
+        /// <summary> Tenant of client. </summary>
+        public Guid? TenantId { get; }
         /// <summary> private Key of client. </summary>
         public string Key { get; }
-        /// <summary> Gets the key type. </summary>
-        public ClientSecretType? KeyType { get; }
     }
 }

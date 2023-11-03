@@ -33,7 +33,7 @@ namespace Eryph.IdentityClient
         {
             ClientDiagnostics = clientDiagnostics ?? throw new ArgumentNullException(nameof(clientDiagnostics));
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
-            _endpoint = endpoint ?? new Uri("https://localhost:53065/identity");
+            _endpoint = endpoint ?? new Uri("https://localhost:58922/identity");
         }
 
         internal HttpMessage CreateCreateRequest(Client body)
@@ -60,7 +60,7 @@ namespace Eryph.IdentityClient
         /// <param name="body"> The Client to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
-        public async Task<Response<ClientWithSecrets>> CreateAsync(Client body = null, CancellationToken cancellationToken = default)
+        public async Task<Response<ClientWithSecret>> CreateAsync(Client body = null, CancellationToken cancellationToken = default)
         {
             using var message = CreateCreateRequest(body);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
@@ -68,9 +68,9 @@ namespace Eryph.IdentityClient
             {
                 case 201:
                     {
-                        ClientWithSecrets value = default;
+                        ClientWithSecret value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ClientWithSecrets.DeserializeClientWithSecrets(document.RootElement);
+                        value = ClientWithSecret.DeserializeClientWithSecret(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -82,7 +82,7 @@ namespace Eryph.IdentityClient
         /// <param name="body"> The Client to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
-        public Response<ClientWithSecrets> Create(Client body = null, CancellationToken cancellationToken = default)
+        public Response<ClientWithSecret> Create(Client body = null, CancellationToken cancellationToken = default)
         {
             using var message = CreateCreateRequest(body);
             _pipeline.Send(message, cancellationToken);
@@ -90,9 +90,9 @@ namespace Eryph.IdentityClient
             {
                 case 201:
                     {
-                        ClientWithSecrets value = default;
+                        ClientWithSecret value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ClientWithSecrets.DeserializeClientWithSecrets(document.RootElement);
+                        value = ClientWithSecret.DeserializeClientWithSecret(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -356,7 +356,7 @@ namespace Eryph.IdentityClient
             }
         }
 
-        internal HttpMessage CreateNewKeyRequest(string id)
+        internal HttpMessage CreateNewKeyRequest(string id, NewClientKeyRequestBody body)
         {
             var message = _pipeline.CreateMessage();
             var request = message.Request;
@@ -368,29 +368,37 @@ namespace Eryph.IdentityClient
             uri.AppendPath("/newkey", false);
             request.Uri = uri;
             request.Headers.Add("Accept", "application/json, text/json");
+            if (body != null)
+            {
+                request.Headers.Add("Content-Type", "application/json");
+                var content = new Utf8JsonRequestContent();
+                content.JsonWriter.WriteObjectValue(body);
+                request.Content = content;
+            }
             return message;
         }
 
         /// <summary> Updates a client key. </summary>
         /// <param name="id"> The String to use. </param>
+        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
-        public async Task<Response<ClientWithSecrets>> NewKeyAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<Response<ClientWithSecret>> NewKeyAsync(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
         {
             if (id == null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
 
-            using var message = CreateNewKeyRequest(id);
+            using var message = CreateNewKeyRequest(id, body);
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        ClientWithSecrets value = default;
+                        ClientWithSecret value = default;
                         using var document = await JsonDocument.ParseAsync(message.Response.ContentStream, default, cancellationToken).ConfigureAwait(false);
-                        value = ClientWithSecrets.DeserializeClientWithSecrets(document.RootElement);
+                        value = ClientWithSecret.DeserializeClientWithSecret(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:
@@ -400,24 +408,25 @@ namespace Eryph.IdentityClient
 
         /// <summary> Updates a client key. </summary>
         /// <param name="id"> The String to use. </param>
+        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
-        public Response<ClientWithSecrets> NewKey(string id, CancellationToken cancellationToken = default)
+        public Response<ClientWithSecret> NewKey(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
         {
             if (id == null)
             {
                 throw new ArgumentNullException(nameof(id));
             }
 
-            using var message = CreateNewKeyRequest(id);
+            using var message = CreateNewKeyRequest(id, body);
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
                 case 200:
                     {
-                        ClientWithSecrets value = default;
+                        ClientWithSecret value = default;
                         using var document = JsonDocument.Parse(message.Response.ContentStream);
-                        value = ClientWithSecrets.DeserializeClientWithSecrets(document.RootElement);
+                        value = ClientWithSecret.DeserializeClientWithSecret(document.RootElement);
                         return Response.FromValue(value, message.Response);
                     }
                 default:

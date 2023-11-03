@@ -1,14 +1,13 @@
-﻿using System;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
 namespace Eryph.IdentityClient.Commands
 {
     [PublicAPI]
-    [Cmdlet(VerbsCommon.Set,"EryphClient")]
-    [OutputType(typeof(Client))]
-    public class SetEryphClientCommand : IdentityCmdLet
+    [Cmdlet(VerbsCommon.New, "EryphClientKey")]
+    [OutputType(typeof(ClientWithSecret))]
+    public class NewEryphClientKeyCommand : IdentityCmdLet
     {
         [Parameter(
             Position = 0,
@@ -20,13 +19,9 @@ namespace Eryph.IdentityClient.Commands
             ValueFromPipelineByPropertyName = true)]
         public string Name { get; set; }
 
-        [Parameter(
-            ValueFromPipelineByPropertyName = true)]
-        public string[] AllowedScopes { get; set; }
 
-        [Parameter(
-            ValueFromPipelineByPropertyName = true)]
-        public string Description { get; set; }
+        [Parameter()]
+        public SwitchParameter SharedKey { get; set; }
 
         protected override void ProcessRecord()
         {
@@ -40,18 +35,11 @@ namespace Eryph.IdentityClient.Commands
                     if (client == null)
                         return;
 
-                    if (AllowedScopes != null)
+                    var response = identityClient.NewKey(id, new NewClientKeyRequestBody
                     {
-                        client.AllowedScopes.Clear();
-                        foreach (var scope in AllowedScopes)
-                            client.AllowedScopes.Add(scope);
-                    }
+                        SharedSecret = SharedKey
+                    });
 
-                    if(Name != null)
-                        client.Name = Name;
-
-
-                    var response = identityClient.Update(id, client);
                     WriteObject(response.Value);
 
                 }
@@ -60,7 +48,4 @@ namespace Eryph.IdentityClient.Commands
         }
 
     }
-
-
-    // This class controls our dependency resolution
 }

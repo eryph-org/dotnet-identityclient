@@ -5,15 +5,16 @@
 
 #nullable disable
 
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
 
 namespace Eryph.IdentityClient.Models
 {
-    public partial class ClientWithSecrets
+    public partial class ClientWithSecret
     {
-        internal static ClientWithSecrets DeserializeClientWithSecrets(JsonElement element)
+        internal static ClientWithSecret DeserializeClientWithSecret(JsonElement element)
         {
             if (element.ValueKind == JsonValueKind.Null)
             {
@@ -21,25 +22,30 @@ namespace Eryph.IdentityClient.Models
             }
             Optional<string> id = default;
             Optional<string> name = default;
-            Optional<string> description = default;
             Optional<IReadOnlyList<string>> allowedScopes = default;
+            Optional<IReadOnlyList<Guid>> roles = default;
+            Optional<Guid> tenantId = default;
             Optional<string> key = default;
-            Optional<ClientSecretType> keyType = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        id = null;
+                        continue;
+                    }
                     id = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("name"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        name = null;
+                        continue;
+                    }
                     name = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("description"u8))
-                {
-                    description = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("allowedScopes"u8))
@@ -56,22 +62,41 @@ namespace Eryph.IdentityClient.Models
                     allowedScopes = array;
                     continue;
                 }
-                if (property.NameEquals("key"u8))
-                {
-                    key = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("keyType"u8))
+                if (property.NameEquals("roles"u8))
                 {
                     if (property.Value.ValueKind == JsonValueKind.Null)
                     {
                         continue;
                     }
-                    keyType = new ClientSecretType(property.Value.GetString());
+                    List<Guid> array = new List<Guid>();
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        array.Add(item.GetGuid());
+                    }
+                    roles = array;
+                    continue;
+                }
+                if (property.NameEquals("tenantId"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    tenantId = property.Value.GetGuid();
+                    continue;
+                }
+                if (property.NameEquals("key"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        key = null;
+                        continue;
+                    }
+                    key = property.Value.GetString();
                     continue;
                 }
             }
-            return new ClientWithSecrets(id.Value, name.Value, description.Value, Optional.ToList(allowedScopes), key.Value, Optional.ToNullable(keyType));
+            return new ClientWithSecret(id.Value, name.Value, Optional.ToList(allowedScopes), Optional.ToList(roles), Optional.ToNullable(tenantId), key.Value);
         }
     }
 }

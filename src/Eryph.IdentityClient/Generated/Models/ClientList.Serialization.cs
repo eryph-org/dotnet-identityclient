@@ -26,11 +26,21 @@ namespace Eryph.IdentityClient.Models
             {
                 if (property.NameEquals("count"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        count = null;
+                        continue;
+                    }
                     count = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("nextLink"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        nextLink = null;
+                        continue;
+                    }
                     nextLink = property.Value.GetString();
                     continue;
                 }
