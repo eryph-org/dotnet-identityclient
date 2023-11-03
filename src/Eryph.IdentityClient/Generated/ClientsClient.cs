@@ -44,7 +44,7 @@ namespace Eryph.IdentityClient
         /// <param name="body"> The Client to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
-        public virtual async Task<Response<ClientWithSecrets>> CreateAsync(Client body = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<ClientWithSecret>> CreateAsync(Client body = null, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.Create");
             scope.Start();
@@ -63,7 +63,7 @@ namespace Eryph.IdentityClient
         /// <param name="body"> The Client to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
-        public virtual Response<ClientWithSecrets> Create(Client body = null, CancellationToken cancellationToken = default)
+        public virtual Response<ClientWithSecret> Create(Client body = null, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.Create");
             scope.Start();
@@ -190,14 +190,15 @@ namespace Eryph.IdentityClient
 
         /// <summary> Updates a client key. </summary>
         /// <param name="id"> The String to use. </param>
+        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<Response<ClientWithSecrets>> NewKeyAsync(string id, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<ClientWithSecret>> NewKeyAsync(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.NewKey");
             scope.Start();
             try
             {
-                return await RestClient.NewKeyAsync(id, cancellationToken).ConfigureAwait(false);
+                return await RestClient.NewKeyAsync(id, body, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -208,14 +209,15 @@ namespace Eryph.IdentityClient
 
         /// <summary> Updates a client key. </summary>
         /// <param name="id"> The String to use. </param>
+        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual Response<ClientWithSecrets> NewKey(string id, CancellationToken cancellationToken = default)
+        public virtual Response<ClientWithSecret> NewKey(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.NewKey");
             scope.Start();
             try
             {
-                return RestClient.NewKey(id, cancellationToken);
+                return RestClient.NewKey(id, body, cancellationToken);
             }
             catch (Exception e)
             {

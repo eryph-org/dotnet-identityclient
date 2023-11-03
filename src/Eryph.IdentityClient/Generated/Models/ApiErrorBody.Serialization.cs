@@ -38,6 +38,11 @@ namespace Eryph.IdentityClient.Models
                 }
                 if (property.NameEquals("target"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        target = null;
+                        continue;
+                    }
                     target = property.Value.GetString();
                     continue;
                 }

@@ -61,8 +61,7 @@ namespace Eryph.IdentityClient.Commands
             {
                 var eryphClient = new Client
                 {
-                    Name = name,
-                    Description = Description
+                    Name = name
                 };
                 foreach (var allowedScope in AllowedScopes)
                 {
@@ -90,7 +89,6 @@ namespace Eryph.IdentityClient.Commands
                     {
                         Id = result.Id,
                         Name = result.Name,
-                        Description = result.Description
                     };
                     foreach (var allowedScope in result.AllowedScopes)
                     {
@@ -106,7 +104,6 @@ namespace Eryph.IdentityClient.Commands
                         Id = result.Id,
                         Name = result.Name,
                         AllowedScopes = result.AllowedScopes.ToArray(),
-                        Description = result.Description,
                         IdentityProvider = clientCredentials.IdentityProvider,
                         PrivateKey = result.Key
                     });

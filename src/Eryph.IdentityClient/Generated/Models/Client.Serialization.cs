@@ -5,6 +5,7 @@
 
 #nullable disable
 
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure.Core;
@@ -18,28 +19,66 @@ namespace Eryph.IdentityClient.Models
             writer.WriteStartObject();
             if (Optional.IsDefined(Id))
             {
-                writer.WritePropertyName("id"u8);
-                writer.WriteStringValue(Id);
+                if (Id != null)
+                {
+                    writer.WritePropertyName("id"u8);
+                    writer.WriteStringValue(Id);
+                }
+                else
+                {
+                    writer.WriteNull("id");
+                }
             }
             if (Optional.IsDefined(Name))
             {
-                writer.WritePropertyName("name"u8);
-                writer.WriteStringValue(Name);
-            }
-            if (Optional.IsDefined(Description))
-            {
-                writer.WritePropertyName("description"u8);
-                writer.WriteStringValue(Description);
+                if (Name != null)
+                {
+                    writer.WritePropertyName("name"u8);
+                    writer.WriteStringValue(Name);
+                }
+                else
+                {
+                    writer.WriteNull("name");
+                }
             }
             if (Optional.IsCollectionDefined(AllowedScopes))
             {
-                writer.WritePropertyName("allowedScopes"u8);
-                writer.WriteStartArray();
-                foreach (var item in AllowedScopes)
+                if (AllowedScopes != null)
                 {
-                    writer.WriteStringValue(item);
+                    writer.WritePropertyName("allowedScopes"u8);
+                    writer.WriteStartArray();
+                    foreach (var item in AllowedScopes)
+                    {
+                        writer.WriteStringValue(item);
+                    }
+                    writer.WriteEndArray();
                 }
-                writer.WriteEndArray();
+                else
+                {
+                    writer.WriteNull("allowedScopes");
+                }
+            }
+            if (Optional.IsCollectionDefined(Roles))
+            {
+                if (Roles != null)
+                {
+                    writer.WritePropertyName("roles"u8);
+                    writer.WriteStartArray();
+                    foreach (var item in Roles)
+                    {
+                        writer.WriteStringValue(item);
+                    }
+                    writer.WriteEndArray();
+                }
+                else
+                {
+                    writer.WriteNull("roles");
+                }
+            }
+            if (Optional.IsDefined(TenantId))
+            {
+                writer.WritePropertyName("tenantId"u8);
+                writer.WriteStringValue(TenantId.Value);
             }
             writer.WriteEndObject();
         }
@@ -52,23 +91,29 @@ namespace Eryph.IdentityClient.Models
             }
             Optional<string> id = default;
             Optional<string> name = default;
-            Optional<string> description = default;
             Optional<IList<string>> allowedScopes = default;
+            Optional<IList<Guid>> roles = default;
+            Optional<Guid> tenantId = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        id = null;
+                        continue;
+                    }
                     id = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("name"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        name = null;
+                        continue;
+                    }
                     name = property.Value.GetString();
-                    continue;
-                }
-                if (property.NameEquals("description"u8))
-                {
-                    description = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("allowedScopes"u8))
@@ -85,8 +130,31 @@ namespace Eryph.IdentityClient.Models
                     allowedScopes = array;
                     continue;
                 }
+                if (property.NameEquals("roles"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    List<Guid> array = new List<Guid>();
+                    foreach (var item in property.Value.EnumerateArray())
+                    {
+                        array.Add(item.GetGuid());
+                    }
+                    roles = array;
+                    continue;
+                }
+                if (property.NameEquals("tenantId"u8))
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    tenantId = property.Value.GetGuid();
+                    continue;
+                }
             }
-            return new Client(id.Value, name.Value, description.Value, Optional.ToList(allowedScopes));
+            return new Client(id.Value, name.Value, Optional.ToList(allowedScopes), Optional.ToList(roles), Optional.ToNullable(tenantId));
         }
     }
 }
