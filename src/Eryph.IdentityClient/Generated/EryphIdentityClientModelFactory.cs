@@ -14,7 +14,7 @@ namespace Eryph.IdentityClient.Models
     /// <summary> Model factory for models. </summary>
     public static partial class EryphIdentityClientModelFactory
     {
-        /// <summary> Initializes a new instance of ClientWithSecret. </summary>
+        /// <summary> Initializes a new instance of <see cref="Models.ClientWithSecret"/>. </summary>
         /// <param name="id">
         /// Unique identifier for a eryph client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
@@ -30,7 +30,13 @@ namespace Eryph.IdentityClient.Models
             allowedScopes ??= new List<string>();
             roles ??= new List<Guid>();
 
-            return new ClientWithSecret(id, name, allowedScopes?.ToList(), roles?.ToList(), tenantId, key);
+            return new ClientWithSecret(
+                id,
+                name,
+                allowedScopes?.ToList(),
+                roles?.ToList(),
+                tenantId,
+                key);
         }
     }
 }

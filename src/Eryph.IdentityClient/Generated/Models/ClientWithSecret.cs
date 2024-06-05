@@ -7,21 +7,20 @@
 
 using System;
 using System.Collections.Generic;
-using Azure.Core;
 
 namespace Eryph.IdentityClient.Models
 {
     /// <summary> The ClientWithSecret. </summary>
     public partial class ClientWithSecret
     {
-        /// <summary> Initializes a new instance of ClientWithSecret. </summary>
+        /// <summary> Initializes a new instance of <see cref="ClientWithSecret"/>. </summary>
         internal ClientWithSecret()
         {
             AllowedScopes = new ChangeTrackingList<string>();
             Roles = new ChangeTrackingList<Guid>();
         }
 
-        /// <summary> Initializes a new instance of ClientWithSecret. </summary>
+        /// <summary> Initializes a new instance of <see cref="ClientWithSecret"/>. </summary>
         /// <param name="id">
         /// Unique identifier for a eryph client
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.

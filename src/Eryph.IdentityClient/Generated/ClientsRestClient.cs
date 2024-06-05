@@ -33,7 +33,7 @@ namespace Eryph.IdentityClient
         {
             ClientDiagnostics = clientDiagnostics ?? throw new ArgumentNullException(nameof(clientDiagnostics));
             _pipeline = pipeline ?? throw new ArgumentNullException(nameof(pipeline));
-            _endpoint = endpoint ?? new Uri("https://localhost:58922/identity");
+            _endpoint = endpoint ?? new Uri("https://localhost:8000/identity");
         }
 
         internal HttpMessage CreateCreateRequest(Client body)
@@ -45,7 +45,7 @@ namespace Eryph.IdentityClient
             uri.Reset(_endpoint);
             uri.AppendPath("/v1/clients", false);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
+            request.Headers.Add("Accept", "application/json, text/json, application/problem+json");
             if (body != null)
             {
                 request.Headers.Add("Content-Type", "application/json");
@@ -57,7 +57,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Creates a new client. </summary>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
         public async Task<Response<ClientWithSecret>> CreateAsync(Client body = null, CancellationToken cancellationToken = default)
@@ -79,7 +79,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Creates a new client. </summary>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
         public Response<ClientWithSecret> Create(Client body = null, CancellationToken cancellationToken = default)
@@ -109,7 +109,7 @@ namespace Eryph.IdentityClient
             uri.Reset(_endpoint);
             uri.AppendPath("/v1/clients", false);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
+            request.Headers.Add("Accept", "application/json, text/json, application/problem+json");
             return message;
         }
 
@@ -163,12 +163,12 @@ namespace Eryph.IdentityClient
             uri.AppendPath("/v1/clients/", false);
             uri.AppendPath(id, true);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Accept", "application/problem+json");
             return message;
         }
 
         /// <summary> Deletes a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
         public async Task<Response> DeleteAsync(string id, CancellationToken cancellationToken = default)
@@ -182,7 +182,7 @@ namespace Eryph.IdentityClient
             await _pipeline.SendAsync(message, cancellationToken).ConfigureAwait(false);
             switch (message.Response.Status)
             {
-                case 200:
+                case 204:
                     return message.Response;
                 default:
                     throw new RequestFailedException(message.Response);
@@ -190,7 +190,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Deletes a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
         public Response Delete(string id, CancellationToken cancellationToken = default)
@@ -204,7 +204,7 @@ namespace Eryph.IdentityClient
             _pipeline.Send(message, cancellationToken);
             switch (message.Response.Status)
             {
-                case 200:
+                case 204:
                     return message.Response;
                 default:
                     throw new RequestFailedException(message.Response);
@@ -221,12 +221,12 @@ namespace Eryph.IdentityClient
             uri.AppendPath("/v1/clients/", false);
             uri.AppendPath(id, true);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
+            request.Headers.Add("Accept", "application/json, text/json, application/problem+json");
             return message;
         }
 
         /// <summary> Get a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
         public async Task<Response<Client>> GetAsync(string id, CancellationToken cancellationToken = default)
@@ -253,7 +253,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Get a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
         public Response<Client> Get(string id, CancellationToken cancellationToken = default)
@@ -289,27 +289,28 @@ namespace Eryph.IdentityClient
             uri.AppendPath("/v1/clients/", false);
             uri.AppendPath(id, true);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            if (body != null)
-            {
-                request.Headers.Add("Content-Type", "application/json");
-                var content = new Utf8JsonRequestContent();
-                content.JsonWriter.WriteObjectValue(body);
-                request.Content = content;
-            }
+            request.Headers.Add("Accept", "application/json, text/json, application/problem+json");
+            request.Headers.Add("Content-Type", "application/json");
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(body);
+            request.Content = content;
             return message;
         }
 
         /// <summary> Updates a client. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
-        public async Task<Response<Client>> UpdateAsync(string id, Client body = null, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="body"/> is null. </exception>
+        public async Task<Response<Client>> UpdateAsync(string id, Client body, CancellationToken cancellationToken = default)
         {
             if (id == null)
             {
                 throw new ArgumentNullException(nameof(id));
+            }
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
             }
 
             using var message = CreateUpdateRequest(id, body);
@@ -329,15 +330,19 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Updates a client. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
-        public Response<Client> Update(string id, Client body = null, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="body"/> is null. </exception>
+        public Response<Client> Update(string id, Client body, CancellationToken cancellationToken = default)
         {
             if (id == null)
             {
                 throw new ArgumentNullException(nameof(id));
+            }
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
             }
 
             using var message = CreateUpdateRequest(id, body);
@@ -367,27 +372,28 @@ namespace Eryph.IdentityClient
             uri.AppendPath(id, true);
             uri.AppendPath("/newkey", false);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
-            if (body != null)
-            {
-                request.Headers.Add("Content-Type", "application/json");
-                var content = new Utf8JsonRequestContent();
-                content.JsonWriter.WriteObjectValue(body);
-                request.Content = content;
-            }
+            request.Headers.Add("Accept", "application/json, text/json, application/problem+json");
+            request.Headers.Add("Content-Type", "application/json");
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(body);
+            request.Content = content;
             return message;
         }
 
         /// <summary> Updates a client key. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="NewClientKeyRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
-        public async Task<Response<ClientWithSecret>> NewKeyAsync(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="body"/> is null. </exception>
+        public async Task<Response<ClientWithSecret>> NewKeyAsync(string id, NewClientKeyRequestBody body, CancellationToken cancellationToken = default)
         {
             if (id == null)
             {
                 throw new ArgumentNullException(nameof(id));
+            }
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
             }
 
             using var message = CreateNewKeyRequest(id, body);
@@ -407,15 +413,19 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Updates a client key. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="NewClientKeyRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
-        public Response<ClientWithSecret> NewKey(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="body"/> is null. </exception>
+        public Response<ClientWithSecret> NewKey(string id, NewClientKeyRequestBody body, CancellationToken cancellationToken = default)
         {
             if (id == null)
             {
                 throw new ArgumentNullException(nameof(id));
+            }
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
             }
 
             using var message = CreateNewKeyRequest(id, body);
@@ -443,7 +453,7 @@ namespace Eryph.IdentityClient
             uri.Reset(_endpoint);
             uri.AppendRawNextLink(nextLink, false);
             request.Uri = uri;
-            request.Headers.Add("Accept", "application/json, text/json");
+            request.Headers.Add("Accept", "application/json, text/json, application/problem+json");
             return message;
         }
 

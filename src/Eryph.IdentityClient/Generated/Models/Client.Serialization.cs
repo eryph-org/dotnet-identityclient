@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using Azure;
 using Azure.Core;
 
 namespace Eryph.IdentityClient.Models
@@ -89,11 +90,11 @@ namespace Eryph.IdentityClient.Models
             {
                 return null;
             }
-            Optional<string> id = default;
-            Optional<string> name = default;
-            Optional<IList<string>> allowedScopes = default;
-            Optional<IList<Guid>> roles = default;
-            Optional<Guid> tenantId = default;
+            string id = default;
+            string name = default;
+            IList<string> allowedScopes = default;
+            IList<Guid> roles = default;
+            Guid? tenantId = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"u8))
@@ -154,7 +155,23 @@ namespace Eryph.IdentityClient.Models
                     continue;
                 }
             }
-            return new Client(id.Value, name.Value, Optional.ToList(allowedScopes), Optional.ToList(roles), Optional.ToNullable(tenantId));
+            return new Client(id, name, allowedScopes ?? new ChangeTrackingList<string>(), roles ?? new ChangeTrackingList<Guid>(), tenantId);
+        }
+
+        /// <summary> Deserializes the model from a raw response. </summary>
+        /// <param name="response"> The response to deserialize the model from. </param>
+        internal static Client FromResponse(Response response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeClient(document.RootElement);
+        }
+
+        /// <summary> Convert into a <see cref="RequestContent"/>. </summary>
+        internal virtual RequestContent ToRequestContent()
+        {
+            var content = new Utf8JsonRequestContent();
+            content.JsonWriter.WriteObjectValue(this);
+            return content;
         }
     }
 }
