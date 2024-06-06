@@ -89,11 +89,12 @@ namespace Eryph.IdentityClient.Commands
                     {
                         Id = result.Id,
                         Name = result.Name,
+                        TenantId = result.TenantId,
                     };
+
                     foreach (var allowedScope in result.AllowedScopes)
                     {
                         eryphClient.AllowedScopes.Add(allowedScope);
-
                     }
 
                     WriteObject(eryphClient);
