@@ -37,7 +37,8 @@ namespace Eryph.IdentityClient.Commands
                 {
                     IsDistributedTracingEnabled = true,
                     IsLoggingEnabled = IsDebugEnabled,
-                    IsLoggingContentEnabled = IsDebugEnabled
+                    IsLoggingContentEnabled = IsDebugEnabled,
+                    LoggedHeaderNames = { "api-supported-versions" },
                 }
             };
 
