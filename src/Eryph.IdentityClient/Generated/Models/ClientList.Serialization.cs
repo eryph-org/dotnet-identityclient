@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Text.Json;
-using Azure.Core;
+using Azure;
 
 namespace Eryph.IdentityClient.Models
 {
@@ -19,9 +19,9 @@ namespace Eryph.IdentityClient.Models
             {
                 return null;
             }
-            Optional<string> count = default;
-            Optional<string> nextLink = default;
-            Optional<IReadOnlyList<Client>> value = default;
+            string count = default;
+            string nextLink = default;
+            IReadOnlyList<Client> value = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("count"u8))
@@ -59,7 +59,15 @@ namespace Eryph.IdentityClient.Models
                     continue;
                 }
             }
-            return new ClientList(count.Value, nextLink.Value, Optional.ToList(value));
+            return new ClientList(count, nextLink, value ?? new ChangeTrackingList<Client>());
+        }
+
+        /// <summary> Deserializes the model from a raw response. </summary>
+        /// <param name="response"> The response to deserialize the model from. </param>
+        internal static ClientList FromResponse(Response response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeClientList(document.RootElement);
         }
     }
 }

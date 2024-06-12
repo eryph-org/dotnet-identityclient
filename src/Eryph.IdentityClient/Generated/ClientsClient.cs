@@ -41,7 +41,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Creates a new client. </summary>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
         public virtual async Task<Response<ClientWithSecret>> CreateAsync(Client body = null, CancellationToken cancellationToken = default)
@@ -60,7 +60,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Creates a new client. </summary>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <remarks> Creates a client. </remarks>
         public virtual Response<ClientWithSecret> Create(Client body = null, CancellationToken cancellationToken = default)
@@ -79,7 +79,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Deletes a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<Response> DeleteAsync(string id, CancellationToken cancellationToken = default)
         {
@@ -97,7 +97,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Deletes a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual Response Delete(string id, CancellationToken cancellationToken = default)
         {
@@ -115,7 +115,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Get a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual async Task<Response<Client>> GetAsync(string id, CancellationToken cancellationToken = default)
         {
@@ -133,7 +133,7 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Get a client. </summary>
-        /// <param name="id"> The String to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         public virtual Response<Client> Get(string id, CancellationToken cancellationToken = default)
         {
@@ -151,10 +151,10 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Updates a client. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<Response<Client>> UpdateAsync(string id, Client body = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<Client>> UpdateAsync(string id, Client body, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.Update");
             scope.Start();
@@ -170,10 +170,10 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Updates a client. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The Client to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="Client"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual Response<Client> Update(string id, Client body = null, CancellationToken cancellationToken = default)
+        public virtual Response<Client> Update(string id, Client body, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.Update");
             scope.Start();
@@ -189,10 +189,10 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Updates a client key. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="NewClientKeyRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual async Task<Response<ClientWithSecret>> NewKeyAsync(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
+        public virtual async Task<Response<ClientWithSecret>> NewKeyAsync(string id, NewClientKeyRequestBody body, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.NewKey");
             scope.Start();
@@ -208,10 +208,10 @@ namespace Eryph.IdentityClient
         }
 
         /// <summary> Updates a client key. </summary>
-        /// <param name="id"> The String to use. </param>
-        /// <param name="body"> The NewClientKeyRequestBody to use. </param>
+        /// <param name="id"> The <see cref="string"/> to use. </param>
+        /// <param name="body"> The <see cref="NewClientKeyRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        public virtual Response<ClientWithSecret> NewKey(string id, NewClientKeyRequestBody body = null, CancellationToken cancellationToken = default)
+        public virtual Response<ClientWithSecret> NewKey(string id, NewClientKeyRequestBody body, CancellationToken cancellationToken = default)
         {
             using var scope = _clientDiagnostics.CreateScope("ClientsClient.NewKey");
             scope.Start();

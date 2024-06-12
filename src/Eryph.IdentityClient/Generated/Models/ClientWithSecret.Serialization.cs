@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using Azure.Core;
+using Azure;
 
 namespace Eryph.IdentityClient.Models
 {
@@ -20,12 +20,12 @@ namespace Eryph.IdentityClient.Models
             {
                 return null;
             }
-            Optional<string> id = default;
-            Optional<string> name = default;
-            Optional<IReadOnlyList<string>> allowedScopes = default;
-            Optional<IReadOnlyList<Guid>> roles = default;
-            Optional<Guid> tenantId = default;
-            Optional<string> key = default;
+            string id = default;
+            string name = default;
+            IReadOnlyList<string> allowedScopes = default;
+            IReadOnlyList<Guid> roles = default;
+            Guid? tenantId = default;
+            string key = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"u8))
@@ -96,7 +96,21 @@ namespace Eryph.IdentityClient.Models
                     continue;
                 }
             }
-            return new ClientWithSecret(id.Value, name.Value, Optional.ToList(allowedScopes), Optional.ToList(roles), Optional.ToNullable(tenantId), key.Value);
+            return new ClientWithSecret(
+                id,
+                name,
+                allowedScopes ?? new ChangeTrackingList<string>(),
+                roles ?? new ChangeTrackingList<Guid>(),
+                tenantId,
+                key);
+        }
+
+        /// <summary> Deserializes the model from a raw response. </summary>
+        /// <param name="response"> The response to deserialize the model from. </param>
+        internal static ClientWithSecret FromResponse(Response response)
+        {
+            using var document = JsonDocument.Parse(response.Content);
+            return DeserializeClientWithSecret(document.RootElement);
         }
     }
 }

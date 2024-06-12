@@ -6,20 +6,19 @@
 #nullable disable
 
 using System.Collections.Generic;
-using Azure.Core;
 
 namespace Eryph.IdentityClient.Models
 {
     /// <summary> The ClientList. </summary>
     internal partial class ClientList
     {
-        /// <summary> Initializes a new instance of ClientList. </summary>
+        /// <summary> Initializes a new instance of <see cref="ClientList"/>. </summary>
         internal ClientList()
         {
             Value = new ChangeTrackingList<Client>();
         }
 
-        /// <summary> Initializes a new instance of ClientList. </summary>
+        /// <summary> Initializes a new instance of <see cref="ClientList"/>. </summary>
         /// <param name="count"></param>
         /// <param name="nextLink"></param>
         /// <param name="value"></param>

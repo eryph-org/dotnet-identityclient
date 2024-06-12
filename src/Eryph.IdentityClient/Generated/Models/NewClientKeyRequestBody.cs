@@ -10,9 +10,16 @@ namespace Eryph.IdentityClient.Models
     /// <summary> The NewClientKeyRequestBody. </summary>
     public partial class NewClientKeyRequestBody
     {
-        /// <summary> Initializes a new instance of NewClientKeyRequestBody. </summary>
+        /// <summary> Initializes a new instance of <see cref="NewClientKeyRequestBody"/>. </summary>
         public NewClientKeyRequestBody()
         {
+        }
+
+        /// <summary> Initializes a new instance of <see cref="NewClientKeyRequestBody"/>. </summary>
+        /// <param name="sharedSecret"></param>
+        internal NewClientKeyRequestBody(bool? sharedSecret)
+        {
+            SharedSecret = sharedSecret;
         }
 
         /// <summary> Gets or sets the shared secret. </summary>
