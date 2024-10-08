@@ -19,11 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-
     <ProjectReference Include="..\Eryph.IdentityClient\Eryph.IdentityClient.csproj" />
   </ItemGroup>
 
