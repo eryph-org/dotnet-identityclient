@@ -5,7 +5,6 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure;
@@ -23,37 +22,23 @@ namespace Eryph.IdentityClient.Models
             string id = default;
             string name = default;
             IReadOnlyList<string> allowedScopes = default;
-            IReadOnlyList<Guid> roles = default;
-            Guid? tenantId = default;
+            IReadOnlyList<string> roles = default;
+            string tenantId = default;
             string key = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        id = null;
-                        continue;
-                    }
                     id = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("name"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        name = null;
-                        continue;
-                    }
                     name = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("allowedScopes"u8))
+                if (property.NameEquals("allowed_scopes"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
                     List<string> array = new List<string>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
@@ -64,34 +49,21 @@ namespace Eryph.IdentityClient.Models
                 }
                 if (property.NameEquals("roles"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    List<Guid> array = new List<Guid>();
+                    List<string> array = new List<string>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(item.GetGuid());
+                        array.Add(item.GetString());
                     }
                     roles = array;
                     continue;
                 }
-                if (property.NameEquals("tenantId"u8))
+                if (property.NameEquals("tenant_id"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    tenantId = property.Value.GetGuid();
+                    tenantId = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("key"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        key = null;
-                        continue;
-                    }
                     key = property.Value.GetString();
                     continue;
                 }
@@ -99,8 +71,8 @@ namespace Eryph.IdentityClient.Models
             return new ClientWithSecret(
                 id,
                 name,
-                allowedScopes ?? new ChangeTrackingList<string>(),
-                roles ?? new ChangeTrackingList<Guid>(),
+                allowedScopes,
+                roles,
                 tenantId,
                 key);
         }

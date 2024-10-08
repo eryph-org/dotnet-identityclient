@@ -8,6 +8,8 @@ namespace Eryph.IdentityClient.Commands
     {
         public string Id { get; set; }
 
+        public string TenantId { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -17,6 +19,5 @@ namespace Eryph.IdentityClient.Commands
         public string[] AllowedScopes { get; set; }
 
         public string PrivateKey { get; set; }
-
     }
 }

@@ -10,23 +10,20 @@ using Azure.Core;
 
 namespace Eryph.IdentityClient.Models
 {
-    public partial class NewClientKeyRequestBody : IUtf8JsonSerializable
+    public partial class UpdateClientRequestBody : IUtf8JsonSerializable
     {
         void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
         {
             writer.WriteStartObject();
-            if (Optional.IsDefined(SharedSecret))
+            writer.WritePropertyName("name"u8);
+            writer.WriteStringValue(Name);
+            writer.WritePropertyName("allowed_scopes"u8);
+            writer.WriteStartArray();
+            foreach (var item in AllowedScopes)
             {
-                if (SharedSecret != null)
-                {
-                    writer.WritePropertyName("shared_secret"u8);
-                    writer.WriteBooleanValue(SharedSecret.Value);
-                }
-                else
-                {
-                    writer.WriteNull("shared_secret");
-                }
+                writer.WriteStringValue(item);
             }
+            writer.WriteEndArray();
             writer.WriteEndObject();
         }
 

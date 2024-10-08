@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Eryph.IdentityClient.Models
 {
@@ -14,22 +15,40 @@ namespace Eryph.IdentityClient.Models
     public partial class Client
     {
         /// <summary> Initializes a new instance of <see cref="Client"/>. </summary>
-        public Client()
+        /// <param name="id">
+        /// The Unique identifier of the eryph client.
+        /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
+        /// </param>
+        /// <param name="name"> Human-readable name of the client, for example email address of owner. </param>
+        /// <param name="allowedScopes"></param>
+        /// <param name="roles"> The roles of the client,. </param>
+        /// <param name="tenantId"> The ID of the tenant to which the client belongs. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/>, <paramref name="name"/>, <paramref name="allowedScopes"/>, <paramref name="roles"/> or <paramref name="tenantId"/> is null. </exception>
+        internal Client(string id, string name, IEnumerable<string> allowedScopes, IEnumerable<string> roles, string tenantId)
         {
-            AllowedScopes = new ChangeTrackingList<string>();
-            Roles = new ChangeTrackingList<Guid>();
+            Argument.AssertNotNull(id, nameof(id));
+            Argument.AssertNotNull(name, nameof(name));
+            Argument.AssertNotNull(allowedScopes, nameof(allowedScopes));
+            Argument.AssertNotNull(roles, nameof(roles));
+            Argument.AssertNotNull(tenantId, nameof(tenantId));
+
+            Id = id;
+            Name = name;
+            AllowedScopes = allowedScopes.ToList();
+            Roles = roles.ToList();
+            TenantId = tenantId;
         }
 
         /// <summary> Initializes a new instance of <see cref="Client"/>. </summary>
         /// <param name="id">
-        /// Unique identifier for a eryph client
+        /// The Unique identifier of the eryph client.
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
         /// </param>
-        /// <param name="name"> human readable name of client, for example email address of owner. </param>
-        /// <param name="allowedScopes"> allowed scopes of client. </param>
-        /// <param name="roles"> Roles of client. </param>
-        /// <param name="tenantId"> Tenant of client. </param>
-        internal Client(string id, string name, IList<string> allowedScopes, IList<Guid> roles, Guid? tenantId)
+        /// <param name="name"> Human-readable name of the client, for example email address of owner. </param>
+        /// <param name="allowedScopes"></param>
+        /// <param name="roles"> The roles of the client,. </param>
+        /// <param name="tenantId"> The ID of the tenant to which the client belongs. </param>
+        internal Client(string id, string name, IReadOnlyList<string> allowedScopes, IReadOnlyList<string> roles, string tenantId)
         {
             Id = id;
             Name = name;
@@ -39,17 +58,17 @@ namespace Eryph.IdentityClient.Models
         }
 
         /// <summary>
-        /// Unique identifier for a eryph client
+        /// The Unique identifier of the eryph client.
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
         /// </summary>
-        public string Id { get; set; }
-        /// <summary> human readable name of client, for example email address of owner. </summary>
-        public string Name { get; set; }
-        /// <summary> allowed scopes of client. </summary>
-        public IList<string> AllowedScopes { get; set; }
-        /// <summary> Roles of client. </summary>
-        public IList<Guid> Roles { get; set; }
-        /// <summary> Tenant of client. </summary>
-        public Guid? TenantId { get; set; }
+        public string Id { get; }
+        /// <summary> Human-readable name of the client, for example email address of owner. </summary>
+        public string Name { get; }
+        /// <summary> Gets the allowed scopes. </summary>
+        public IReadOnlyList<string> AllowedScopes { get; }
+        /// <summary> The roles of the client,. </summary>
+        public IReadOnlyList<string> Roles { get; }
+        /// <summary> The ID of the tenant to which the client belongs. </summary>
+        public string TenantId { get; }
     }
 }

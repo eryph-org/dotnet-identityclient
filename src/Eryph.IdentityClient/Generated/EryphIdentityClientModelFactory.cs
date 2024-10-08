@@ -5,7 +5,6 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,19 +15,19 @@ namespace Eryph.IdentityClient.Models
     {
         /// <summary> Initializes a new instance of <see cref="Models.ClientWithSecret"/>. </summary>
         /// <param name="id">
-        /// Unique identifier for a eryph client
+        /// The Unique identifier of the eryph client.
         /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
         /// </param>
-        /// <param name="name"> human readable name of client, for example email address of owner. </param>
-        /// <param name="allowedScopes"> allowed scopes of client. </param>
-        /// <param name="roles"> Roles of client. </param>
-        /// <param name="tenantId"> Tenant of client. </param>
-        /// <param name="key"> private Key of client. </param>
+        /// <param name="name"> Human-readable name of the client, for example email address of owner. </param>
+        /// <param name="allowedScopes"></param>
+        /// <param name="roles"> The roles of the client,. </param>
+        /// <param name="tenantId"> The ID of the tenant to which the client belongs. </param>
+        /// <param name="key"> The private key or shared secret of the client. </param>
         /// <returns> A new <see cref="Models.ClientWithSecret"/> instance for mocking. </returns>
-        public static ClientWithSecret ClientWithSecret(string id = null, string name = null, IEnumerable<string> allowedScopes = null, IEnumerable<Guid> roles = null, Guid? tenantId = null, string key = null)
+        public static ClientWithSecret ClientWithSecret(string id = null, string name = null, IEnumerable<string> allowedScopes = null, IEnumerable<string> roles = null, string tenantId = null, string key = null)
         {
             allowedScopes ??= new List<string>();
-            roles ??= new List<Guid>();
+            roles ??= new List<string>();
 
             return new ClientWithSecret(
                 id,
@@ -37,6 +36,24 @@ namespace Eryph.IdentityClient.Models
                 roles?.ToList(),
                 tenantId,
                 key);
+        }
+
+        /// <summary> Initializes a new instance of <see cref="Models.Client"/>. </summary>
+        /// <param name="id">
+        /// The Unique identifier of the eryph client.
+        /// Only characters a-z, A-Z, numbers 0-9 and hyphens are allowed.
+        /// </param>
+        /// <param name="name"> Human-readable name of the client, for example email address of owner. </param>
+        /// <param name="allowedScopes"></param>
+        /// <param name="roles"> The roles of the client,. </param>
+        /// <param name="tenantId"> The ID of the tenant to which the client belongs. </param>
+        /// <returns> A new <see cref="Models.Client"/> instance for mocking. </returns>
+        public static Client Client(string id = null, string name = null, IEnumerable<string> allowedScopes = null, IEnumerable<string> roles = null, string tenantId = null)
+        {
+            allowedScopes ??= new List<string>();
+            roles ??= new List<string>();
+
+            return new Client(id, name, allowedScopes?.ToList(), roles?.ToList(), tenantId);
         }
     }
 }
