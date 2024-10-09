@@ -59,7 +59,6 @@ namespace Eryph.IdentityClient
         /// <summary> Create a new client. </summary>
         /// <param name="body"> The <see cref="NewClientRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <remarks> Create a client. </remarks>
         public async Task<Response<ClientWithSecret>> CreateAsync(NewClientRequestBody body = null, CancellationToken cancellationToken = default)
         {
             using var message = CreateCreateRequest(body);
@@ -81,7 +80,6 @@ namespace Eryph.IdentityClient
         /// <summary> Create a new client. </summary>
         /// <param name="body"> The <see cref="NewClientRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
-        /// <remarks> Create a client. </remarks>
         public Response<ClientWithSecret> Create(NewClientRequestBody body = null, CancellationToken cancellationToken = default)
         {
             using var message = CreateCreateRequest(body);
@@ -385,7 +383,6 @@ namespace Eryph.IdentityClient
         /// <param name="body"> The <see cref="NewClientKeyRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="body"/> is null. </exception>
-        /// <remarks> Create or replace a client key. </remarks>
         public async Task<Response<ClientWithSecret>> NewKeyAsync(string id, NewClientKeyRequestBody body, CancellationToken cancellationToken = default)
         {
             if (id == null)
@@ -418,7 +415,6 @@ namespace Eryph.IdentityClient
         /// <param name="body"> The <see cref="NewClientKeyRequestBody"/> to use. </param>
         /// <param name="cancellationToken"> The cancellation token to use. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="body"/> is null. </exception>
-        /// <remarks> Create or replace a client key. </remarks>
         public Response<ClientWithSecret> NewKey(string id, NewClientKeyRequestBody body, CancellationToken cancellationToken = default)
         {
             if (id == null)
