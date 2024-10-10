@@ -49,6 +49,10 @@ namespace Eryph.IdentityClient.Models
                 }
                 if (property.NameEquals("roles"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
                     List<string> array = new List<string>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
@@ -72,7 +76,7 @@ namespace Eryph.IdentityClient.Models
                 id,
                 name,
                 allowedScopes,
-                roles,
+                roles ?? new ChangeTrackingList<string>(),
                 tenantId,
                 key);
         }

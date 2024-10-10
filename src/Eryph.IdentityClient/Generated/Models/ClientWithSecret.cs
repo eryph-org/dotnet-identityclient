@@ -21,23 +21,21 @@ namespace Eryph.IdentityClient.Models
         /// </param>
         /// <param name="name"> Human-readable name of the client, for example email address of owner. </param>
         /// <param name="allowedScopes"></param>
-        /// <param name="roles"> The roles of the client,. </param>
         /// <param name="tenantId"> The ID of the tenant to which the client belongs. </param>
         /// <param name="key"> The private key or shared secret of the client. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="id"/>, <paramref name="name"/>, <paramref name="allowedScopes"/>, <paramref name="roles"/>, <paramref name="tenantId"/> or <paramref name="key"/> is null. </exception>
-        internal ClientWithSecret(string id, string name, IEnumerable<string> allowedScopes, IEnumerable<string> roles, string tenantId, string key)
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/>, <paramref name="name"/>, <paramref name="allowedScopes"/>, <paramref name="tenantId"/> or <paramref name="key"/> is null. </exception>
+        internal ClientWithSecret(string id, string name, IEnumerable<string> allowedScopes, string tenantId, string key)
         {
             Argument.AssertNotNull(id, nameof(id));
             Argument.AssertNotNull(name, nameof(name));
             Argument.AssertNotNull(allowedScopes, nameof(allowedScopes));
-            Argument.AssertNotNull(roles, nameof(roles));
             Argument.AssertNotNull(tenantId, nameof(tenantId));
             Argument.AssertNotNull(key, nameof(key));
 
             Id = id;
             Name = name;
             AllowedScopes = allowedScopes.ToList();
-            Roles = roles.ToList();
+            Roles = new ChangeTrackingList<string>();
             TenantId = tenantId;
             Key = key;
         }

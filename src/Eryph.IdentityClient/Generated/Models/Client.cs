@@ -21,21 +21,19 @@ namespace Eryph.IdentityClient.Models
         /// </param>
         /// <param name="name"> Human-readable name of the client, for example email address of owner. </param>
         /// <param name="allowedScopes"></param>
-        /// <param name="roles"> The roles of the client,. </param>
         /// <param name="tenantId"> The ID of the tenant to which the client belongs. </param>
-        /// <exception cref="ArgumentNullException"> <paramref name="id"/>, <paramref name="name"/>, <paramref name="allowedScopes"/>, <paramref name="roles"/> or <paramref name="tenantId"/> is null. </exception>
-        internal Client(string id, string name, IEnumerable<string> allowedScopes, IEnumerable<string> roles, string tenantId)
+        /// <exception cref="ArgumentNullException"> <paramref name="id"/>, <paramref name="name"/>, <paramref name="allowedScopes"/> or <paramref name="tenantId"/> is null. </exception>
+        internal Client(string id, string name, IEnumerable<string> allowedScopes, string tenantId)
         {
             Argument.AssertNotNull(id, nameof(id));
             Argument.AssertNotNull(name, nameof(name));
             Argument.AssertNotNull(allowedScopes, nameof(allowedScopes));
-            Argument.AssertNotNull(roles, nameof(roles));
             Argument.AssertNotNull(tenantId, nameof(tenantId));
 
             Id = id;
             Name = name;
             AllowedScopes = allowedScopes.ToList();
-            Roles = roles.ToList();
+            Roles = new ChangeTrackingList<string>();
             TenantId = tenantId;
         }
 

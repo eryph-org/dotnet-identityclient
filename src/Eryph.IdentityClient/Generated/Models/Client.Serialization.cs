@@ -48,6 +48,10 @@ namespace Eryph.IdentityClient.Models
                 }
                 if (property.NameEquals("roles"u8))
                 {
+                    if (property.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
                     List<string> array = new List<string>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
@@ -62,7 +66,7 @@ namespace Eryph.IdentityClient.Models
                     continue;
                 }
             }
-            return new Client(id, name, allowedScopes, roles, tenantId);
+            return new Client(id, name, allowedScopes, roles ?? new ChangeTrackingList<string>(), tenantId);
         }
 
         /// <summary> Deserializes the model from a raw response. </summary>
