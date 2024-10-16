@@ -5,7 +5,9 @@
 
 #nullable disable
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Eryph.IdentityClient.Models
 {
@@ -13,26 +15,22 @@ namespace Eryph.IdentityClient.Models
     internal partial class ClientList
     {
         /// <summary> Initializes a new instance of <see cref="ClientList"/>. </summary>
-        internal ClientList()
+        /// <param name="value"></param>
+        /// <exception cref="ArgumentNullException"> <paramref name="value"/> is null. </exception>
+        internal ClientList(IEnumerable<Client> value)
         {
-            Value = new ChangeTrackingList<Client>();
+            Argument.AssertNotNull(value, nameof(value));
+
+            Value = value.ToList();
         }
 
         /// <summary> Initializes a new instance of <see cref="ClientList"/>. </summary>
-        /// <param name="count"></param>
-        /// <param name="nextLink"></param>
         /// <param name="value"></param>
-        internal ClientList(string count, string nextLink, IReadOnlyList<Client> value)
+        internal ClientList(IReadOnlyList<Client> value)
         {
-            Count = count;
-            NextLink = nextLink;
             Value = value;
         }
 
-        /// <summary> Gets the count. </summary>
-        public string Count { get; }
-        /// <summary> Gets the next link. </summary>
-        public string NextLink { get; }
         /// <summary> Gets the value. </summary>
         public IReadOnlyList<Client> Value { get; }
     }

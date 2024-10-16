@@ -5,85 +5,14 @@
 
 #nullable disable
 
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Azure;
-using Azure.Core;
 
 namespace Eryph.IdentityClient.Models
 {
-    public partial class Client : IUtf8JsonSerializable
+    public partial class Client
     {
-        void IUtf8JsonSerializable.Write(Utf8JsonWriter writer)
-        {
-            writer.WriteStartObject();
-            if (Optional.IsDefined(Id))
-            {
-                if (Id != null)
-                {
-                    writer.WritePropertyName("id"u8);
-                    writer.WriteStringValue(Id);
-                }
-                else
-                {
-                    writer.WriteNull("id");
-                }
-            }
-            if (Optional.IsDefined(Name))
-            {
-                if (Name != null)
-                {
-                    writer.WritePropertyName("name"u8);
-                    writer.WriteStringValue(Name);
-                }
-                else
-                {
-                    writer.WriteNull("name");
-                }
-            }
-            if (Optional.IsCollectionDefined(AllowedScopes))
-            {
-                if (AllowedScopes != null)
-                {
-                    writer.WritePropertyName("allowedScopes"u8);
-                    writer.WriteStartArray();
-                    foreach (var item in AllowedScopes)
-                    {
-                        writer.WriteStringValue(item);
-                    }
-                    writer.WriteEndArray();
-                }
-                else
-                {
-                    writer.WriteNull("allowedScopes");
-                }
-            }
-            if (Optional.IsCollectionDefined(Roles))
-            {
-                if (Roles != null)
-                {
-                    writer.WritePropertyName("roles"u8);
-                    writer.WriteStartArray();
-                    foreach (var item in Roles)
-                    {
-                        writer.WriteStringValue(item);
-                    }
-                    writer.WriteEndArray();
-                }
-                else
-                {
-                    writer.WriteNull("roles");
-                }
-            }
-            if (Optional.IsDefined(TenantId))
-            {
-                writer.WritePropertyName("tenantId"u8);
-                writer.WriteStringValue(TenantId.Value);
-            }
-            writer.WriteEndObject();
-        }
-
         internal static Client DeserializeClient(JsonElement element)
         {
             if (element.ValueKind == JsonValueKind.Null)
@@ -92,37 +21,23 @@ namespace Eryph.IdentityClient.Models
             }
             string id = default;
             string name = default;
-            IList<string> allowedScopes = default;
-            IList<Guid> roles = default;
-            Guid? tenantId = default;
+            IReadOnlyList<string> allowedScopes = default;
+            IReadOnlyList<string> roles = default;
+            string tenantId = default;
             foreach (var property in element.EnumerateObject())
             {
                 if (property.NameEquals("id"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        id = null;
-                        continue;
-                    }
                     id = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("name"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        name = null;
-                        continue;
-                    }
                     name = property.Value.GetString();
                     continue;
                 }
-                if (property.NameEquals("allowedScopes"u8))
+                if (property.NameEquals("allowed_scopes"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
                     List<string> array = new List<string>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
@@ -137,25 +52,21 @@ namespace Eryph.IdentityClient.Models
                     {
                         continue;
                     }
-                    List<Guid> array = new List<Guid>();
+                    List<string> array = new List<string>();
                     foreach (var item in property.Value.EnumerateArray())
                     {
-                        array.Add(item.GetGuid());
+                        array.Add(item.GetString());
                     }
                     roles = array;
                     continue;
                 }
-                if (property.NameEquals("tenantId"u8))
+                if (property.NameEquals("tenant_id"u8))
                 {
-                    if (property.Value.ValueKind == JsonValueKind.Null)
-                    {
-                        continue;
-                    }
-                    tenantId = property.Value.GetGuid();
+                    tenantId = property.Value.GetString();
                     continue;
                 }
             }
-            return new Client(id, name, allowedScopes ?? new ChangeTrackingList<string>(), roles ?? new ChangeTrackingList<Guid>(), tenantId);
+            return new Client(id, name, allowedScopes, roles ?? new ChangeTrackingList<string>(), tenantId);
         }
 
         /// <summary> Deserializes the model from a raw response. </summary>
@@ -164,14 +75,6 @@ namespace Eryph.IdentityClient.Models
         {
             using var document = JsonDocument.Parse(response.Content);
             return DeserializeClient(document.RootElement);
-        }
-
-        /// <summary> Convert into a <see cref="RequestContent"/>. </summary>
-        internal virtual RequestContent ToRequestContent()
-        {
-            var content = new Utf8JsonRequestContent();
-            content.JsonWriter.WriteObjectValue(this);
-            return content;
         }
     }
 }

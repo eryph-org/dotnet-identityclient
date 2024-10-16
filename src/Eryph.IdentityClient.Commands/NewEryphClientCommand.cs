@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Management.Automation;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
@@ -7,7 +8,7 @@ namespace Eryph.IdentityClient.Commands
 {
     [PublicAPI]
     [Cmdlet(VerbsCommon.New, "EryphClient", DefaultParameterSetName = "create")]
-    [OutputType(typeof(CreatedClient), typeof(Client), ParameterSetName = new[] {"create", "createAndSave"})]
+    [OutputType(typeof(CreatedClient))]
     public class NewEryphClientCommand : IdentityCmdLet
     {
         [Parameter(
@@ -42,8 +43,15 @@ namespace Eryph.IdentityClient.Commands
         [Parameter(
             ParameterSetName = "createAndSave",
             ValueFromPipelineByPropertyName = true)]
-        public string Description { get; set; }
+        public SwitchParameter IsSuperAdmin { get; set; }
 
+        [Parameter(
+            ParameterSetName = "create",
+            ValueFromPipelineByPropertyName = true)]
+        [Parameter(
+            ParameterSetName = "createAndSave",
+            ValueFromPipelineByPropertyName = true)]
+        public string Description { get; set; }
 
         [Parameter(
             ParameterSetName = "createAndSave")]
@@ -59,17 +67,14 @@ namespace Eryph.IdentityClient.Commands
             var identityClient = Factory.CreateClientsClient();
             foreach (var name in Name)
             {
-                var eryphClient = new Client
+                var newClient = new NewClientRequestBody(
+                    name: name,
+                    allowedScopes: AllowedScopes)
                 {
-                    Name = name
+                    Roles = IsSuperAdmin ? [BuiltInRoles.SuperAdmin] : null,
                 };
-                foreach (var allowedScope in AllowedScopes)
-                {
-                    eryphClient.AllowedScopes.Add(allowedScope);
 
-                }
-
-                var response = identityClient.Create(eryphClient);
+                var response = identityClient.Create(newClient);
                 if (!response.HasValue)
                     return;
 
@@ -84,35 +89,17 @@ namespace Eryph.IdentityClient.Commands
 
                     var script = InvokeCommand.NewScriptBlock(cmd);
                     script.Invoke(result.Key);
-
-                    eryphClient = new Client
-                    {
-                        Id = result.Id,
-                        Name = result.Name,
-                        TenantId = result.TenantId,
-                    };
-
-                    foreach (var allowedScope in result.AllowedScopes)
-                    {
-                        eryphClient.AllowedScopes.Add(allowedScope);
-                    }
-
-                    WriteObject(eryphClient);
                 }
-                else
-                    WriteObject(new CreatedClient
-                    {
-                        Id = result.Id,
-                        Name = result.Name,
-                        AllowedScopes = result.AllowedScopes.ToArray(),
-                        IdentityProvider = clientCredentials.IdentityProvider,
-                        PrivateKey = result.Key
-                    });
 
-
-
+                WriteObject(new CreatedClient
+                {
+                    Id = result.Id,
+                    Name = result.Name,
+                    AllowedScopes = result.AllowedScopes.ToArray(),
+                    IdentityProvider = clientCredentials.IdentityProvider,
+                    PrivateKey = AddToConfiguration ? null : result.Key
+                });
             }
         }
-
     }
 }

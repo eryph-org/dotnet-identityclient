@@ -34,33 +34,12 @@ namespace Eryph.IdentityClient.Commands
             {
                 foreach (var id in Id)
                 {
-                    var client =
-                        identityClient.Get(id)?.Value;
-
-                    if (client == null)
-                        return;
-
-                    if (AllowedScopes != null)
-                    {
-                        client.AllowedScopes.Clear();
-                        foreach (var scope in AllowedScopes)
-                            client.AllowedScopes.Add(scope);
-                    }
-
-                    if(Name != null)
-                        client.Name = Name;
-
-
-                    var response = identityClient.Update(id, client);
+                    var response = identityClient.Update(
+                        id,
+                        new UpdateClientRequestBody(Name, AllowedScopes));
                     WriteObject(response.Value);
-
                 }
-
             }
         }
-
     }
-
-
-    // This class controls our dependency resolution
 }
