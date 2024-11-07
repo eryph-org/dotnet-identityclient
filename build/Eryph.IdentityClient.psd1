@@ -72,7 +72,7 @@ RequiredModules = @(@{ModuleName="Eryph.ClientRuntime.Configuration"; ModuleVers
 FunctionsToExport = @()
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-CmdletsToExport = @("Get-EryphClient", "New-EryphClient", "Remove-EryphClient", "Set-EryphClient")
+CmdletsToExport = @("Get-EryphClient", "New-EryphClient", "New-EryphClientKey", "Remove-EryphClient", "Set-EryphClient")
 
 # Variables to export from this module
 VariablesToExport = '*'
