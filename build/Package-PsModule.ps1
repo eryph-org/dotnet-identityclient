@@ -65,10 +65,18 @@ if (-not [string]::IsNullOrWhiteSpace($NuGetPreReleaseTag)) {
 Set-Content -Path (Join-Path $modulePath "$ModuleName.psd1") -Value $config
 Copy-Item -Path (Join-Path $PSScriptRoot "$ModuleName.psm1") -Destination $modulePath
 
+# This Powershell module requires the module Eryph.ClientRuntime.Configuration.
+# We download that module first to ensure that it is available. Otherwise,
+# the import during the test below would fail.
+$clientRuntimeModulePath = Join-Path $OutputDirectory "PsModule" "Eryph.ClientRuntime.Configuration"
+if (-not (Test-Path $clientRuntimeModulePath)) {
+    Save-Module -Path (Join-Path $OutputDirectory "PsModule") -Name 'Eryph.ClientRuntime.Configuration' -Force
+}
+
 # Verify that all Cmdlets are exposed in the manifest. We must load the modules
 # in separate Powershell processes to avoid conflicts.
 $powershell = $isWindowsPowershell ? 'powershell.exe' : 'pwsh.exe'
-$moduleCmdlets = (& $powershell -Command "[array](Import-Module -Scope Local $modulePath -PassThru).ExportedCmdlets.Keys -join ','") -split ','
+$moduleCmdlets = (& $powershell -Command "Import-Module $clientRuntimeModulePath; [array](Import-Module -Scope Local $modulePath -PassThru).ExportedCmdlets.Keys -join ','") -split ','
 $assemblyCmdlets = (& $powershell -Command "[array](Import-Module -Scope Local $TargetPath -PassThru).ExportedCmdlets.Keys -join ','") -split ','
 $missingCmdlets = [Linq.Enumerable]::Except($assemblyCmdlets, $moduleCmdlets)
 if ($missingCmdlets.Count -gt 0) {
