@@ -68,9 +68,9 @@ Copy-Item -Path (Join-Path $PSScriptRoot "$ModuleName.psm1") -Destination $modul
 # This Powershell module requires the module Eryph.ClientRuntime.Configuration.
 # We download that module first to ensure that it is available. Otherwise,
 # the import during the test below would fail.
-$clientRuntimeModulePath = Join-Path $OutputDirectory "PsModule" "Eryph.ClientRuntime.Configuration"
+$clientRuntimeModulePath = Join-Path $OutputDirectory "PsModuleDependencies" "Eryph.ClientRuntime.Configuration"
 if (-not (Test-Path $clientRuntimeModulePath)) {
-    Save-Module -Path (Join-Path $OutputDirectory "PsModule") -Name 'Eryph.ClientRuntime.Configuration' -Force
+    Save-Module -Path (Join-Path $OutputDirectory "PsModuleDependencies") -Name 'Eryph.ClientRuntime.Configuration' -Force
 }
 
 # Verify that all Cmdlets are exposed in the manifest. We must load the modules
