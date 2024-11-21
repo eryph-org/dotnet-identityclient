@@ -28,8 +28,6 @@ $ErrorActionPreference = 'Stop'
 $modulePath = Join-Path $OutputDirectory "PsModule" $ModuleName
 $isPrerelease = -not [string]::IsNullOrWhiteSpace($NuGetPreReleaseTag)
 
-Write-Output "OutputDir: $OutputDirectory"
-
 # This Powershell module requires the module Eryph.ClientRuntime.Configuration.
 # We download that module first to ensure that it is available. Otherwise,
 # the import during the test below would fail.
@@ -37,7 +35,6 @@ $clientRuntimeModule = Find-Module Eryph.ClientRuntime.Configuration -AllowPrere
 $clientRuntimeVersion = $clientRuntimeModule.Version
 # Use a dedicated directory per module version to ensure that we load the correct module.
 $dependenciesPath = Join-Path $OutputDirectory "PsModuleDependencies" $clientRuntimeVersion
-Write-Output "DependenciesDir: $dependenciesPath"
 if (-not (Test-Path $dependenciesPath)) {
     $null = New-Item -ItemType Directory -Path $dependenciesPath
 }

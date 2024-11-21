@@ -31,8 +31,6 @@ param(
 $PSNativeCommandUseErrorActionPreference = $true
 $ErrorActionPreference = 'Stop'
 
-Write-Output "OutputDir: $OutputDirectory"
-
 $excludedFiles = @("System.Management.Automation.dll", "JetBrains.Annotations.dll")
 
 $modulePath = Join-Path $OutputDirectory "PsModule" $ModuleName

@@ -29,8 +29,6 @@ param(
 $PSNativeCommandUseErrorActionPreference = $true
 $ErrorActionPreference = 'Stop'
 
-Write-Output "OutputDir: $OutputDirectory"
-
 $modulePath = Join-Path $OutputDirectory "PsModule" $ModuleName
 
 # Prepare the output directory
