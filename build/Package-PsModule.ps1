@@ -41,6 +41,7 @@ $excludedFiles = @("System.Management.Automation.dll", "JetBrains.Annotations.dl
 
 $modulePath = Join-Path $OutputDirectory "PsModule" $ModuleName
 $isWindowsPowershell = $TargetFramework -like 'net4*'
+$isPrerelease = -not [string]::IsNullOrWhiteSpace($NuGetPreReleaseTag)
 $moduleAssemblyPath = Join-Path $modulePath ($isWindowsPowershell  ? 'desktop' : 'coreclr')
 
 # Prepare the output directory
@@ -59,7 +60,7 @@ Copy-Item -Path (Join-Path $targetDirectory "*") -Destination $moduleAssemblyPat
 # Prepare the module manifest
 $config = Get-Content (Join-Path $PSScriptRoot "$ModuleName.psd1") -Raw
 $config = $config.Replace("ModuleVersion = '0.1'", "ModuleVersion = '$MajorMinorPatch'");
-if (-not [string]::IsNullOrWhiteSpace($NuGetPreReleaseTag)) {
+if ($isPrerelease) {
     $config = $config.Replace("# Prerelease = ''", "Prerelease = '$NuGetPreReleaseTag'");
 }
 Set-Content -Path (Join-Path $modulePath "$ModuleName.psd1") -Value $config
@@ -68,17 +69,18 @@ Copy-Item -Path (Join-Path $PSScriptRoot "$ModuleName.psm1") -Destination $modul
 # This Powershell module requires the module Eryph.ClientRuntime.Configuration.
 # We download that module first to ensure that it is available. Otherwise,
 # the import during the test below would fail.
-$configData = Import-PowerShellDataFile (Join-Path $modulePath "$ModuleName.psd1")
-$clientRuntimeVersion = $configData.RequiredModules[0].ModuleVersion
-$clientRuntimeModulePath = Join-Path $OutputDirectory "PsModuleDependencies" "Eryph.ClientRuntime.Configuration"
-if (-not (Test-Path (Join-Path $clientRuntimeModulePath $clientRuntimeVersion))) {
-    Save-Module -Path (Join-Path $OutputDirectory "PsModuleDependencies") -Name 'Eryph.ClientRuntime.Configuration' -AllowPrerelease -Force
+$clientRuntimeModule = Find-Module Eryph.ClientRuntime.Configuration -AllowPrerelease:$isPrerelease
+$clientRuntimeVersion = $clientRuntimeModule.Version
+$null = New-Item -ItemType Directory -Path (Join-Path $OutputDirectory "PsModuleDependencies" $clientRuntimeVersion) -ErrorAction SilentlyContinue
+$clientRuntimeModulePath = Join-Path $OutputDirectory "PsModuleDependencies" $clientRuntimeVersion "Eryph.ClientRuntime.Configuration"
+if (-not (Test-Path $clientRuntimeModulePath)) {
+    Save-Module -Path (Join-Path $OutputDirectory "PsModuleDependencies" $clientRuntimeVersion) -Name 'Eryph.ClientRuntime.Configuration' -AllowPrerelease:$isPrerelease
 }
 
 # Verify that all Cmdlets are exposed in the manifest. We must load the modules
 # in separate Powershell processes to avoid conflicts.
 $powershell = $isWindowsPowershell ? 'powershell.exe' : 'pwsh.exe'
-$moduleCmdlets = (& $powershell -Command "Import-Module $clientRuntimeModulePath -RequiredVersion $clientRuntimeVersion; [array](Import-Module -Scope Local $modulePath -PassThru).ExportedCmdlets.Keys -join ','") -split ','
+$moduleCmdlets = (& $powershell -Command "Import-Module $clientRuntimeModulePath; [array](Import-Module -Scope Local $modulePath -PassThru).ExportedCmdlets.Keys -join ','") -split ','
 $assemblyCmdlets = (& $powershell -Command "[array](Import-Module -Scope Local $TargetPath -PassThru).ExportedCmdlets.Keys -join ','") -split ','
 $missingCmdlets = [Linq.Enumerable]::Except($assemblyCmdlets, $moduleCmdlets)
 if ($missingCmdlets.Count -gt 0) {
