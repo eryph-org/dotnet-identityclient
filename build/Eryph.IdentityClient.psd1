@@ -51,7 +51,9 @@ ClrVersion = '4.0'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName="Eryph.ClientRuntime.Configuration"; ModuleVersion="0.1.0"; GUID="31a5834e-973e-478f-a48d-cea5f1e92962"})
+RequiredModules = @(
+    @{ ModuleName="Eryph.ClientRuntime.Configuration"; ModuleVersion="0.8.1"; GUID="31a5834e-973e-478f-a48d-cea5f1e92962" }
+)
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
@@ -72,7 +74,13 @@ RequiredModules = @(@{ModuleName="Eryph.ClientRuntime.Configuration"; ModuleVers
 FunctionsToExport = @()
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-CmdletsToExport = @("Get-EryphClient", "New-EryphClient", "New-EryphClientKey", "Remove-EryphClient", "Set-EryphClient")
+CmdletsToExport = @(
+    "Get-EryphClient",
+    "New-EryphClient",
+    "New-EryphClientKey",
+    "Remove-EryphClient",
+    "Set-EryphClient"
+)
 
 # Variables to export from this module
 VariablesToExport = '*'
