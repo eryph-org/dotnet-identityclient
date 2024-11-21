@@ -52,7 +52,7 @@ ClrVersion = '4.0'
 
 # Modules that must be imported into the global environment prior to importing this module
 RequiredModules = @(
-    @{ ModuleName="Eryph.ClientRuntime.Configuration"; ModuleVersion="0.8.1"; GUID="31a5834e-973e-478f-a48d-cea5f1e92962" }
+    @{ ModuleName="Eryph.ClientRuntime.Configuration"; ModuleVersion="0.7.1"; GUID="31a5834e-973e-478f-a48d-cea5f1e92962" }
 )
 
 # Assemblies that must be loaded prior to importing this module
