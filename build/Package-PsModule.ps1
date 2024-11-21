@@ -70,7 +70,6 @@ Copy-Item -Path (Join-Path $PSScriptRoot "$ModuleName.psm1") -Destination $modul
 # the import during the test below would fail.
 $configData = Import-PowerShellDataFile (Join-Path $modulePath "$ModuleName.psd1")
 $clientRuntimeVersion = $configData.RequiredModules[0].ModuleVersion
-Write-Output "Downloading Eryph.ClientRuntime.Configuration version $clientRuntimeVersion"
 $clientRuntimeModulePath = Join-Path $OutputDirectory "PsModuleDependencies" "Eryph.ClientRuntime.Configuration"
 if (-not (Test-Path (Join-Path $clientRuntimeModulePath $clientRuntimeVersion))) {
     Save-Module -Path (Join-Path $OutputDirectory "PsModuleDependencies") -Name 'Eryph.ClientRuntime.Configuration' -AllowPrerelease -Force
