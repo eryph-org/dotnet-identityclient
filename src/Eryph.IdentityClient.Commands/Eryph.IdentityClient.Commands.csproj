@@ -14,6 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- This can be removed once Azure.Core updates its dependencies. -->
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Eryph.IdentityClient\Eryph.IdentityClient.csproj" />
   </ItemGroup>
 
