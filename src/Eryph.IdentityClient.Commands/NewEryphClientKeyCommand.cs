@@ -25,8 +25,7 @@ public class NewEryphClientKeyCommand : IdentityCmdLet
         
         foreach (var id in Id)
         {
-            var client =
-                identityClient.Get(id)?.Value;
+            var client = identityClient.Get(id)?.Value;
 
             if (client == null)
                 return;

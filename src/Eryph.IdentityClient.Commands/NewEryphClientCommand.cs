@@ -43,15 +43,7 @@ public class NewEryphClientCommand : IdentityCmdLet
         ParameterSetName = "createAndSave",
         ValueFromPipelineByPropertyName = true)]
     public SwitchParameter IsSuperAdmin { get; set; }
-
-    [Parameter(
-        ParameterSetName = "create",
-        ValueFromPipelineByPropertyName = true)]
-    [Parameter(
-        ParameterSetName = "createAndSave",
-        ValueFromPipelineByPropertyName = true)]
-    public string Description { get; set; }
-
+    
     [Parameter(
         ParameterSetName = "createAndSave")]
     public SwitchParameter AddToConfiguration { get; set; }
