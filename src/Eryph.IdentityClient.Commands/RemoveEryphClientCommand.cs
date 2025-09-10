@@ -1,6 +1,7 @@
-﻿using System.Management.Automation;
-using Eryph.IdentityClient.Models;
+﻿using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
+using System;
+using System.Management.Automation;
 
 namespace Eryph.IdentityClient.Commands;
 
@@ -32,7 +33,18 @@ public class RemoveEryphClientCommand : IdentityCmdLet
         var identityClient = Factory.CreateClientsClient();
         foreach (var id in Id)
         {
-            if (!Force && !ShouldContinue($"Eryph client {id} will be deleted!", "Warning!", ref _yesToAll, ref _noToAll))
+            Client client;
+            try
+            {
+                client = identityClient.Get(id);
+            }
+            catch (Exception ex)
+            {
+                WriteError(new ErrorRecord(ex, "EryphClientNotFound", ErrorCategory.ObjectNotFound, id));
+                continue;
+            }
+
+            if (!Force && !ShouldContinue($"Eryph client '{client.Name}' (ID: {id}) will be deleted!", "Warning!", ref _yesToAll, ref _noToAll))
                 continue;
 
             identityClient.Delete(id);
