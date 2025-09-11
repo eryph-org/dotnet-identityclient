@@ -1,4 +1,5 @@
-﻿using System.Management.Automation;
+﻿using System;
+using System.Management.Automation;
 using Eryph.IdentityClient.Models;
 using JetBrains.Annotations;
 
@@ -14,7 +15,8 @@ public class SetEryphClientCommand : IdentityCmdLet
         Mandatory = true,
         ValueFromPipeline = true,
         ValueFromPipelineByPropertyName = true)]
-    public string[] Id { get; set; }
+    [ValidateNotNullOrEmpty]
+    public string Id { get; set; }
 
     [Parameter(
         Mandatory = true,
@@ -29,13 +31,20 @@ public class SetEryphClientCommand : IdentityCmdLet
     protected override void ProcessRecord()
     {
         var identityClient = Factory.CreateClientsClient();
-        
-        foreach (var id in Id)
+        try
         {
-            var response = identityClient.Update(
-                id,
-                new UpdateClientRequestBody(Name, AllowedScopes));
-            WriteObject(response.Value);
+            _ = identityClient.Get(Id);
         }
+        catch (Exception ex)
+        {
+            WriteError(new ErrorRecord(ex, "EryphClientNotFound", ErrorCategory.ObjectNotFound, Id));
+            return;
+        }
+
+        var response = identityClient.Update(
+            Id,
+            new UpdateClientRequestBody(Name, AllowedScopes));
+
+        WriteObject(response.Value);
     }
 }
